@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * Should be able to render "instruction set format" strings into beautiful tables.
- *
+ * <p>
  * Wavedrom's bitfield is nearly what I wanted
  */
 public class InstructionSetRendererExtension implements ExternalCodeRenderer {
@@ -35,24 +35,22 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
         BitFieldRenderer bitFieldRenderer = new BitFieldRenderer(new BitFieldRenderer.Config());
 
         return bitFieldRenderer.renderStuff(
-          entries.stream()
-            .map(this::map)
-            .collect(Collectors.toList())
+                entries.stream()
+                        .map(this::map)
+                        .collect(Collectors.toList())
         );
 
     }
 
     private FieldType map(Entry entry) {
-        Register register = new Register();
-
-        register.setLeftLabel(entry.getMnemonic());
-        register.setRightLabel(entry.getDescription());
-        register.setBitArrays(
-                mapBitArray(entry.getBitPattern())
-        );
-
-        return register;
+        return Register.builder()
+                .centerLeftLabel(entry.getMnemonic())
+                .centerRightLabel(entry.getDescription())
+                .bitArrays(
+                        mapBitArray(entry.getBitPattern())
+                ).build();
     }
+
     private List<Register.BitArray> mapBitArray(String bitPattern) {
         bitPattern = bitPattern.replaceAll("\\s", "");  //remove spaces
 
@@ -66,21 +64,21 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
         int colorCounter = 0;
 
         int indexCounter = 0;
-        for(String s : splits) {
+        for (String s : splits) {
             int groupSize = s.length();
 
-            String originalText = originalPattern.substring(indexCounter, indexCounter+groupSize);
+            String originalText = originalPattern.substring(indexCounter, indexCounter + groupSize);
 
             indexCounter += groupSize;
 
             Register.BitArray entry = new Register.BitArray();
             entry.setNumberOfBits(groupSize);
 
-            if(s.startsWith("0")) {
+            if (s.startsWith("0")) {
                 //binary constant
                 entry.setText(originalText);
                 entry.setBitColor(0);
-            }else if(s.startsWith("'")) {
+            } else if (s.startsWith("'")) {
                 //separator, do not render
                 entry = null;
             } else {
@@ -91,7 +89,7 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
 
                 int color;
 
-                if(!nameSet.contains(name))
+                if (!nameSet.contains(name))
                     nameSet.add(name);
 
                 color = 2 + (nameSet.indexOf(name) % (10 - 2));
@@ -99,7 +97,7 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
                 entry.setBitColor(color);
             }
 
-            if(entry != null)
+            if (entry != null)
                 bitArrays.add(entry);
         }
 
@@ -120,7 +118,7 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
      * @return instruction set entry
      */
     private Entry parseLine(String source) {
-        if(source.isEmpty() || source.isBlank())
+        if (source.isEmpty() || source.isBlank())
             return null;
 
         String[] parts = source.split("\\s{2,}|\\|");
@@ -130,16 +128,16 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
         //assume the bit pattern is always there when stuff's not empty
         entry.setBitPattern(parts[0]);
 
-        if(parts.length > 1) {
+        if (parts.length > 1) {
             //we've got a mnemonic.
             entry.setMnemonic(parts[1]);
         }
 
-        if(parts.length > 2) {
+        if (parts.length > 2) {
             //we've got some description, it seems.
             //Mild overkill.
             StringBuilder desc = new StringBuilder(parts[2]);
-            for(int i = 3; i < parts.length; i++) {
+            for (int i = 3; i < parts.length; i++) {
                 desc.append("|").append(parts[i]);
             }
             entry.setDescription(desc.toString());

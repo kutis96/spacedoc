@@ -48,8 +48,10 @@ public class SillyCDI {
 
     @SuppressWarnings("unchecked")
     public static <T> List<T> lookupAll(Class<T> clazz, int minPriority) throws LookupException {
-        if(store.get(clazz) == null)
+        if(clazz == null)
             throw new LookupException("Null class provided");
+        if(store.get(clazz) == null)
+            throw new LookupException("No implementation found for class " + clazz.getCanonicalName());
 
         return (List<T>) store.get(clazz)
                 .stream()

@@ -1,35 +1,30 @@
 package in.spcct.spacedoc.md.renderer.bitfield.fieldtype;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Data
+@Builder
 public class Register implements FieldType {
 
+    @Builder.Default
     private List<BitArray> bitArrays = new ArrayList<>();
 
-    private String leftLabel;
-    private String rightLabel;
+    private String topLeftLabel;
+    private String topRightLabel;
+    private String bottomLeftLabel;
+    private String bottomRightLabel;
+    private String centerLeftLabel;
+    private String centerRightLabel;
 
-    public Register() {
-    }
+    @Builder.Default
+    private int numberOfRows = 1;
 
-    public Register(BitArray... bitArrays) {
-        this(null, null, bitArrays);
-    }
-
-    public Register(String leftLabel, BitArray... bitArrays) {
-        this(leftLabel, null, bitArrays);
-    }
-
-    public Register(String leftLabel, String rightLabel, BitArray... bitArrays) {
-        this.leftLabel = leftLabel;
-        this.rightLabel = rightLabel;
-        this.bitArrays = Arrays.asList(bitArrays);
-    }
+    @Builder.Default
+    private boolean breakInTheMiddle = false;
 
     @Data
     public static class BitArray {
@@ -43,6 +38,8 @@ public class Register implements FieldType {
         }
 
         String text;
+
+        String href;
 
         // 0,1 = white
         // 2~9 = colors

@@ -1,4 +1,4 @@
-package in.spcct.spacedoc.propconfig;
+package in.spcct.spacedoc.configloader;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

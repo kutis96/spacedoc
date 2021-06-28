@@ -1,18 +1,18 @@
 package in.spcct.spacedoc.config;
 
-import in.spcct.spacedoc.propconfig.AbstractPropertyConfig;
-import in.spcct.spacedoc.propconfig.Property;
-import in.spcct.spacedoc.propconfig.PropertyFile;
+import in.spcct.spacedoc.configloader.ConfigFile;
+import in.spcct.spacedoc.configloader.Property;
+import in.spcct.spacedoc.configloader.propconfig.AbstractPropertiesFileConfig;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@PropertyFile(
+@ConfigFile(
         value = "/config/spacedoc.properties",
         prefix = "general"
 )
-public class GeneralConfig extends AbstractPropertyConfig {
+public class GeneralConfig extends AbstractPropertiesFileConfig {
 
 
     @Property(required = false)

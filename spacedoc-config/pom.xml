@@ -41,6 +41,12 @@
             <artifactId>graal-sdk</artifactId>
             <version>21.1.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20210307</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>

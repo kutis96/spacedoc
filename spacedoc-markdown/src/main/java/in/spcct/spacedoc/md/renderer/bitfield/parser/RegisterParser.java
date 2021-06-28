@@ -35,6 +35,11 @@ public class RegisterParser implements FieldTypeParser {
 
     private static final String PARAM_LEFT_LABEL = "label-left";
     private static final String PARAM_RIGHT_LABEL = "label-right";
+    private static final String PARAM_TOP_LEFT_LABEL = "label-top-left";
+    private static final String PARAM_TOP_RIGHT_LABEL = "label-top-right";
+    private static final String PARAM_BOTTOM_LEFT_LABEL = "label-bottom-left";
+    private static final String PARAM_BOTTOM_RIGHT_LABEL = "label-bottom-right";
+
     private static final String PARAM_BIT_PATTERNS = "fields";
 
     private static final String PARAM_BIT_ARRAY_SIZE = "bits";
@@ -43,16 +48,17 @@ public class RegisterParser implements FieldTypeParser {
 
     @Override
     public FieldType parse(JSONObject object) {
-        Register register = new Register();
-
-        register.setLeftLabel(object.optString(PARAM_LEFT_LABEL));
-        register.setRightLabel(object.optString(PARAM_RIGHT_LABEL));
-
-        register.setBitArrays(
-                parseBitArrays(object.getJSONArray(PARAM_BIT_PATTERNS))
-        );
-
-        return register;
+        return Register
+                .builder()
+                .centerLeftLabel(object.optString(PARAM_LEFT_LABEL))
+                .centerRightLabel(object.optString(PARAM_RIGHT_LABEL))
+                .topLeftLabel(object.optString(PARAM_TOP_LEFT_LABEL))
+                .topRightLabel(object.optString(PARAM_TOP_RIGHT_LABEL))
+                .bottomLeftLabel(object.optString(PARAM_BOTTOM_LEFT_LABEL))
+                .bottomRightLabel(object.optString(PARAM_BOTTOM_RIGHT_LABEL))
+                .bitArrays(
+                    parseBitArrays(object.getJSONArray(PARAM_BIT_PATTERNS))
+                ).build();
     }
 
     private List<Register.BitArray> parseBitArrays(JSONArray jsonArray) {

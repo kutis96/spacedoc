@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static in.spcct.spacedoc.md.renderer.bitfield.renderer.xml.SvgUtils.rect;
 import static in.spcct.spacedoc.md.renderer.bitfield.renderer.xml.SvgUtils.text;
 
 public class BitFieldRenderer {
@@ -28,15 +27,19 @@ public class BitFieldRenderer {
 
         this.svgRoot = new LiteXmlBuilder("svg")
                 .attribute("xmlns", "http://www.w3.org/2000/svg")
-                .attribute("width", config.width)
-                .attribute("height", config.height)
-                .attribute("viewBox", "0 0 {0} {1}", config.width, config.height)
-                .attribute("class", config.mainElementClass)
-        ;
+                .attribute("class", config.mainElementClass);
 
-        svgRoot.add(
-                rect(null, null, config.width, config.height).attribute("fill", "white")
-        );
+    }
+
+    private void determineViewBoxSize(Context context) {
+        String width = (config.imageWidth < 0) ? "800"
+                : String.valueOf(config.imageWidth);
+        String height = (config.imageHeight < 0) ? String.valueOf(context.totalVerticalOffset + config.imagePaddingBottom)
+                : String.valueOf(config.imageHeight);
+
+        svgRoot.attribute("width", width)
+                .attribute("height", height)
+                .attribute("viewBox", "0 0 {0} {1}", width, height);
     }
 
     public String renderStuff(FieldType... lanes) {
@@ -62,6 +65,8 @@ public class BitFieldRenderer {
         }
 
         svgRoot.add(contentRoot);
+
+        determineViewBoxSize(context);
 
         return svgRoot.render();
     }
@@ -106,7 +111,7 @@ public class BitFieldRenderer {
         }
 
         LiteXmlBuilder container = new LiteXmlBuilder("g")
-                .attribute("transform", "translate({0},{1})", config.fieldHorizontalOffset + config.bitWidth / 2, config.verticalOffset);
+                .attribute("transform", "translate({0},{1})", config.bitFieldHorizontalOffset + config.bitWidth / 2, config.verticalOffset);
 
         for (int i = 0; i < maxLaneSum; i++) {
             int j = maxLaneSum - i - 1;
@@ -123,32 +128,59 @@ public class BitFieldRenderer {
         public int totalVerticalOffset;
     }
 
-    /**
-     * TODO: Overcomplicate
-     */
     @Data
     public static class Config {
-        public int leftLabelHorizontalOffset = -80;
-        public int rightLabelHorizontalOffset = 5;
-        public int fieldHorizontalOffset = 100;
-        public int bitWidth = 20;
-        public int laneHeight = 26;
-        public int fontSize = 14;
+        private int fontSize = 14;
+        private int leftLabelHorizontalOffset = -77;
+        private int rightLabelHorizontalOffset = 5;
+        private int labelVerticalOffset = -3;
+        private int bitFieldHorizontalOffset = 80;
+        private int bitWidth = 20;
+        private int laneHeight = 26;
+        private int separatorSize = 7;
+        private int bitNumberOffset = -2;
+        private int verticalTickSize = 3;
+        private int horizontalTickSize = 3;
+        private int verticalOffset = 14;
+        private int imageWidth = -1;
+        private int imageHeight = -1;
+        private String mainElementClass;
+        private String fontFamily = "sans-serif";
+        private int imagePaddingBottom = 3;
 
-        public int laneSeparation = 7;
+        private int fieldBreakGap = 10;
+        private int fieldBreakBezierX = 30;
+        private int fieldBreakBezierY = 30;
 
-        public int bitNumberOffset = -2;
-        public int tickHeight = 3;
+        private float fillOpacity = 0.1F;
+        private String[] fillColors = {
+//                null,        //0
+//                null,       //1
+//                "red",      //2
+//                "green",    //3
+//                "blue",     //4
+//                "cyan",     //5
+//                "magenta",  //6
+//                "yellow",   //7
+//                "orange",   //8
+//                "navy",     //9
 
-        public int labelVerticalOffset = -3;
+                // Wavedrom-like color scheme
+                null, //0
+                "#fff", //1
+                "hsl(0, 100%, 50%)", //2
+                "hsl(80, 100%, 50%)", //3
+                "hsl(170, 100%, 50%)", //4
+                "hsl(45, 100%, 50%)", //5
+                "hsl(126, 100%, 50%)", //6
+                "hsl(215, 100%, 50%)", //7
+                "hsl(60, 100%, 50%)", //8
+                "hsl(180, 100%, 50%)", //9
+        };
 
-        public int verticalOffset = 20;
-
-        public int width = 900;
-        public int height = 480;
-
-        public String mainElementClass;
-        public String fontFamily = "sans-serif";
+        public String getFieldColor(int n) {
+            return fillColors[n % Math.min(fillColors.length, 8)];
+        }
     }
 
 

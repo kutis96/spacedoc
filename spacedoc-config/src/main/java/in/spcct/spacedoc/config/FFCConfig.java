@@ -1,19 +1,19 @@
 package in.spcct.spacedoc.config;
 
 
-import in.spcct.spacedoc.propconfig.AbstractPropertyConfig;
-import in.spcct.spacedoc.propconfig.Property;
-import in.spcct.spacedoc.propconfig.PropertyFile;
+import in.spcct.spacedoc.configloader.ConfigFile;
+import in.spcct.spacedoc.configloader.Property;
+import in.spcct.spacedoc.configloader.propconfig.AbstractPropertiesFileConfig;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-@PropertyFile(
+@ConfigFile(
         value = "/config/spacedoc.properties",
         prefix = "ffc"
 )
-public class FFCConfig extends AbstractPropertyConfig {
+public class FFCConfig extends AbstractPropertiesFileConfig {
 
     @Property
     private String npxExecutable;

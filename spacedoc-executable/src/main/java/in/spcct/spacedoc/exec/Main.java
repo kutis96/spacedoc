@@ -9,7 +9,10 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -67,6 +70,13 @@ public class Main {
 
         in.spcct.spacedoc.md.Setup.registerAll();
         in.spcct.spacedoc.ffc.Setup.registerAll();
+
+        //TODO:
+        // - Split into "subprograms"
+        // - - Render markdown
+        // - - - Must be able to load external config for renderers, somehow
+        // - - Render individual file formats
+        // - - - Load external config too
 
         Options cliOptions = new Options();
         cliOptions

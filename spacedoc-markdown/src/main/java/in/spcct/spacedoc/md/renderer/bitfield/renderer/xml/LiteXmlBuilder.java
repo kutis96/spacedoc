@@ -1,13 +1,15 @@
 package in.spcct.spacedoc.md.renderer.bitfield.renderer.xml;
 
 import java.text.MessageFormat;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
-public class LiteXmlBuilder {
+public class LiteXmlBuilder implements Renderable {
 
     private final String elementName;
     private final StringBuilder attributes = new StringBuilder();
-    private final StringBuilder body = new StringBuilder();
+    private final List<Renderable> bodyElements = new LinkedList<>();
 
     public LiteXmlBuilder(String elementName) {
         this.elementName = elementName;
@@ -16,7 +18,7 @@ public class LiteXmlBuilder {
     /**
      * Attempts to add an attribute with this value. If the value is null, no attribute is added.
      *
-     * @param name name of the attribute
+     * @param name  name of the attribute
      * @param value value of the attribute
      * @return this builder
      */
@@ -29,15 +31,15 @@ public class LiteXmlBuilder {
         return this;
     }
 
-    public LiteXmlBuilder add(LiteXmlBuilder element) {
-        if(element != null)
-            body.append(element.render());
+    public LiteXmlBuilder add(Renderable element) {
+        if (element != null)
+            bodyElements.add(element);
         return this;
     }
 
-    public LiteXmlBuilder body(String what) {
-        if(what != null)
-            body.append(what);
+    public LiteXmlBuilder addText(String what) {
+        if (what != null)
+            add(new TextRenderable(what));
         return this;
     }
 
@@ -47,14 +49,20 @@ public class LiteXmlBuilder {
     }
 
     public String render() {
+        StringBuilder result = new StringBuilder();
+
         //attributes starts with ' ' always
-        String content = body.toString();
+        for (Renderable element : bodyElements) {
+            result.append(element.render());
+        }
+
+        String content = result.toString();
 
         if (content.isBlank()) {
             return '<' + elementName + attributes + "/>";
         } else {
             return '<' + elementName + attributes + '>' +
-                    body +
+                    result +
                     "</" + elementName + '>';
         }
     }

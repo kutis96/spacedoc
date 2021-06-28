@@ -13,7 +13,7 @@ public class SeparatorRenderer implements FieldTypeRenderer<Separator> {
 
     @Override
     public LiteXmlBuilder renderType(BitFieldRenderer.Config config, BitFieldRenderer.Context context, Separator fieldConfig) {
-        context.totalVerticalOffset += config.laneSeparation;
+        context.totalVerticalOffset += config.getSeparatorSize();
         return null;
     }
 }

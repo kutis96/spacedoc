@@ -60,7 +60,6 @@ public class BitFieldParser {
     }
 
     private void parseConfig(JSONObject configObject) {
-        //TODO
         config = new BitFieldRenderer.Config();
     }
 
