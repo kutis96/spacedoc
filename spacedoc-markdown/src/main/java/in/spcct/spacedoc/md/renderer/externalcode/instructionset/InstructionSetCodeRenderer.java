@@ -1,24 +1,46 @@
-package in.spcct.spacedoc.md.renderer;
+package in.spcct.spacedoc.md.renderer.externalcode.instructionset;
 
 
+import in.spcct.spacedoc.md.renderer.ExternalCodeRenderer;
 import in.spcct.spacedoc.md.renderer.bitfield.BitFieldRenderer;
+import in.spcct.spacedoc.md.renderer.bitfield.ConfigUtils;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.Register;
-import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
  * Should be able to render "instruction set format" strings into beautiful tables.
  * <p>
- * Wavedrom's bitfield is nearly what I wanted
+ * Instruction set format (schematically):
+ * <p>
+ * file ::= ( line \n ) +
+ * line ::= empty | configvalue | iset
+ * <p>
+ * configvalue ::= "--" [key] : [value]
+ * iset ::= [bit pattern] [separator] [mnemonic] ([separator] [description])*
+ * <p>
+ * bit pattern ::= any string of characters.
+ * 0 and 1 are treated as literal values
+ * alphabetic characters are treated as variable bit field placeholders
+ * ' are treated as bit field separators
+ * spaces are ignored
+ * separator ::= "|" character or 2+ spaces
+ * mnemonic ::= alphabetic characters
+ * description ::= anything
  */
-public class InstructionSetRendererExtension implements ExternalCodeRenderer {
+public class InstructionSetCodeRenderer implements ExternalCodeRenderer {
 
+    /**
+     * Dumb way of persisting field name colors. Colors are stored by position of the given character. Somehow.
+     * <p>
+     * Why like this?
+     *
+     * TODO: Add some way of configuring field colors externally
+     */
     List<Character> nameSet = new ArrayList<>(10);
 
     @Override
@@ -29,10 +51,16 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
     @Override
     public String renderSvg(String source) {
 
-        List<Entry> entries = parse(source);
+        InstructionSetParser parser = new InstructionSetParser();
+
+        parser.parse(source);
+
+        BitFieldRenderer.Config rendererConfig = ConfigUtils.createRendererConfig(parser.getConfigMap());
 
         //TODO: Make externally configurable, somehow.
-        BitFieldRenderer bitFieldRenderer = new BitFieldRenderer(new BitFieldRenderer.Config());
+        BitFieldRenderer bitFieldRenderer = new BitFieldRenderer(rendererConfig);
+
+        List<InstructionSetEntry> entries = parser.getEntryList();
 
         return bitFieldRenderer.renderStuff(
                 entries.stream()
@@ -42,16 +70,16 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
 
     }
 
-    private FieldType map(Entry entry) {
+    private FieldType map(InstructionSetEntry entry) {
         return Register.builder()
                 .centerLeftLabel(entry.getMnemonic())
                 .centerRightLabel(entry.getDescription())
                 .bitArrays(
-                        mapBitArray(entry.getBitPattern())
+                        patternToBitArray(entry.getBitPattern())
                 ).build();
     }
 
-    private List<Register.BitArray> mapBitArray(String bitPattern) {
+    private List<Register.BitArray> patternToBitArray(String bitPattern) {
         bitPattern = bitPattern.replaceAll("\\s", "");  //remove spaces
 
         String originalPattern = bitPattern;
@@ -60,8 +88,6 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
         String[] splits = functionalPattern.split("(?<=(.))(?!\\1)");  //split into groups of consecutive characters. 0 and 1 are treated as the same in constants.
 
         List<Register.BitArray> bitArrays = new LinkedList<>();
-
-        int colorCounter = 0;
 
         int indexCounter = 0;
         for (String s : splits) {
@@ -104,52 +130,4 @@ public class InstructionSetRendererExtension implements ExternalCodeRenderer {
         return bitArrays;
     }
 
-    private List<Entry> parse(String source) {
-        return source.lines()
-                .map(this::parseLine)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Format: bit pattern | mnemonic | description
-     *
-     * @param source line of instruction set listing source code
-     * @return instruction set entry
-     */
-    private Entry parseLine(String source) {
-        if (source.isEmpty() || source.isBlank())
-            return null;
-
-        String[] parts = source.split("\\s{2,}|\\|");
-
-        Entry entry = new Entry();
-
-        //assume the bit pattern is always there when stuff's not empty
-        entry.setBitPattern(parts[0]);
-
-        if (parts.length > 1) {
-            //we've got a mnemonic.
-            entry.setMnemonic(parts[1]);
-        }
-
-        if (parts.length > 2) {
-            //we've got some description, it seems.
-            //Mild overkill.
-            StringBuilder desc = new StringBuilder(parts[2]);
-            for (int i = 3; i < parts.length; i++) {
-                desc.append("|").append(parts[i]);
-            }
-            entry.setDescription(desc.toString());
-        }
-
-        return entry;
-    }
-
-    @Data
-    private static class Entry {
-        private String bitPattern;
-        private String mnemonic;
-        private String description;
-    }
 }

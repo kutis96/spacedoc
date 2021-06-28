@@ -46,7 +46,7 @@ public abstract class AbstractPropertiesFileConfig {
         fieldLoader.loadFields(
                 properties,
                 originalPrefix,
-                this.getClass()
+                this
         );
     }
 

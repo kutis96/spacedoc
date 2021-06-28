@@ -204,7 +204,7 @@ public class RegisterRenderer implements FieldTypeRenderer<Register> {
 
     private void drawTicks(BitFieldRenderer.Config config, Register.BitArray bitArray, LiteXmlBuilder g, int laneHeight) {
         int bitWidth = config.getBitWidth();
-        int tickHeight = config.getVerticalTickSize();
+        int tickHeight = config.getTickHeight();
 
         if (bitArray.botherWithTicks()) {
             for (int i = 1; i < bitArray.getNumberOfBits(); i++) {

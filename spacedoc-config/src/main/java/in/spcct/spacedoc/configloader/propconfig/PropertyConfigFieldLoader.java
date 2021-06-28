@@ -17,14 +17,14 @@ public class PropertyConfigFieldLoader implements FieldLoader<PropertyConfigSour
 
     private final FieldMapper<String> fieldMapper = new StringFieldMapper();
 
-    public void loadFields(Properties properties, String basePrefix, Class<?> clazz) {
-        loadFields(new PropertyConfigSource(properties), basePrefix, clazz);
+    public void loadFields(Properties properties, String basePrefix, Object o) {
+        loadFields(new PropertyConfigSource(properties), basePrefix, o);
     }
 
     @Override
-    public void loadFields(PropertyConfigSource configSource, String basePrefix, Class<?> clazz) {
-        List<FieldMapping> mappings = deriveFieldMappings(basePrefix, clazz);
-        fieldMapper.mapAll(mappings, configSource);
+    public void loadFields(PropertyConfigSource configSource, String basePrefix, Object targetObject) {
+        List<FieldMapping> mappings = deriveFieldMappings(basePrefix, targetObject.getClass());
+        fieldMapper.mapAll(mappings, configSource, targetObject);
     }
 
     private List<FieldMapping> deriveFieldMappings(String basePrefix, Class<?> clazz) {
@@ -46,7 +46,7 @@ public class PropertyConfigFieldLoader implements FieldLoader<PropertyConfigSour
      * @return prefix to be used with further processing
      */
     private String actualPrefix(String prefix) {
-        return ("".equals(prefix))
+        return (prefix == null || "".equals(prefix))
                 ? ""
                 : prefix + '.';
     }

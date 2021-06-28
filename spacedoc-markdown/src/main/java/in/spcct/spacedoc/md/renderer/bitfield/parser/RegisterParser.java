@@ -8,29 +8,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * {
- *     "type": ...,
- *     "label-left": "Some label",
- *     "label-right": "Some other label",
- *     "fields": [
- *          {
- *              "bits": 16,
- *              "name": "Program Counter",
- *              "type": 2
- *          },
- *          {
- *              "bits": 15,
- *              "name": "Extended PC",
- *              "type": 3
- *          },
- *          {
- *              "name": "X"
- *          }
- *     ]
- * }
- */
 public class RegisterParser implements FieldTypeParser {
 
     private static final String PARAM_LEFT_LABEL = "label-left";
@@ -46,6 +23,30 @@ public class RegisterParser implements FieldTypeParser {
     private static final String PARAM_BIT_ARRAY_LABEL = "name";
     private static final String PARAM_BIT_ARRAY_COLOR = "type";
 
+
+    /**
+     * Format:
+     * {
+     *     "type": ...,
+     *     "label-left": "Some label",
+     *     "label-right": "Some other label",
+     *     "fields": [
+     *          {
+     *              "bits": 16,
+     *              "name": "Program Counter",
+     *              "type": 2
+     *          },
+     *          {
+     *              "bits": 15,
+     *              "name": "Extended PC",
+     *              "type": 3
+     *          },
+     *          {
+     *              "name": "X"
+     *          }
+     *     ]
+     * }
+     */
     @Override
     public FieldType parse(JSONObject object) {
         return Register

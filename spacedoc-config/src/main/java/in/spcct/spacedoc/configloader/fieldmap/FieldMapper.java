@@ -13,7 +13,7 @@ import java.util.List;
  */
 public abstract class FieldMapper<V> {
 
-    public void mapAll(List<FieldMapping> mappings, ConfigSource<V> configSource) {
+    public void mapAll(List<FieldMapping> mappings, ConfigSource<V> configSource, Object targetObject) {
         mappings.forEach(mapping -> {
             Field field = mapping.getField();
             String propertyName = mapping.getPath();
@@ -39,7 +39,7 @@ public abstract class FieldMapper<V> {
 
                 convertedValue = convertItem(propertyName, value, fieldType);
 
-                BeanUtils.setProperty(this, field.getName(), convertedValue);
+                BeanUtils.setProperty(targetObject, field.getName(), convertedValue);
             } catch (InvocationTargetException | IllegalAccessException e) {
                 throw new RuntimeException("Failed to map property: Field access exception", e);
             }

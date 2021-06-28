@@ -3,7 +3,6 @@ package in.spcct.spacedoc.md;
 import in.spcct.spacedoc.cdi.SillyCDI;
 import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererStore;
 import in.spcct.spacedoc.md.renderer.ExternalCodeRenderer;
-import in.spcct.spacedoc.md.renderer.InstructionSetRendererExtension;
 import in.spcct.spacedoc.md.renderer.bitfield.BitFieldRendererExtension;
 import in.spcct.spacedoc.md.renderer.bitfield.parser.FieldTypeParser;
 import in.spcct.spacedoc.md.renderer.bitfield.parser.RegisterParser;
@@ -11,6 +10,8 @@ import in.spcct.spacedoc.md.renderer.bitfield.parser.SeparatorParser;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.FieldTypeRenderer;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.RegisterRenderer;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.SeparatorRenderer;
+import in.spcct.spacedoc.md.renderer.externalcode.instructionset.InstructionSetCodeRenderer;
+import in.spcct.spacedoc.md.renderer.externalcode.memorymap.MemoryMapCodeRenderer;
 import in.spcct.spacedoc.md.renderer.impl.GraphvizSvgRenderer;
 import in.spcct.spacedoc.md.renderer.impl.WavedromSvgRenderer;
 
@@ -31,10 +32,13 @@ public class Setup {
                 externalCodeRendererClass, 1, GraphvizSvgRenderer::new
         );
         SillyCDI.register(
-                externalCodeRendererClass, 1, InstructionSetRendererExtension::new
+                externalCodeRendererClass, 1, BitFieldRendererExtension::new
         );
         SillyCDI.register(
-                externalCodeRendererClass, 1, BitFieldRendererExtension::new
+                externalCodeRendererClass, 1, InstructionSetCodeRenderer::new
+        );
+        SillyCDI.register(
+                externalCodeRendererClass, 1, MemoryMapCodeRenderer::new
         );
 
         //TODO: Make better after CDI improvement.
