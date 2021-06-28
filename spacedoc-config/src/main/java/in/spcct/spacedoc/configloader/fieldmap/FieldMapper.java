@@ -46,6 +46,6 @@ public abstract class FieldMapper<V> {
         });
     }
 
-    abstract Object convertItem(String propertyName, V value, Class<?> fieldType);
+    protected abstract Object convertItem(String propertyName, V value, Class<?> fieldType);
 
 }

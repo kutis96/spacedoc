@@ -2,7 +2,7 @@ package in.spcct.spacedoc.configloader.fieldmap;
 
 public class StringFieldMapper extends FieldMapper<String> {
     @Override
-    Object convertItem(String propertyName, String value, Class<?> fieldType) {
+    protected Object convertItem(String propertyName, String value, Class<?> fieldType) {
         Object convertedValue;
 
         if (value == null) {

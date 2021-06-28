@@ -1,6 +1,8 @@
 package in.spcct.spacedoc.md.renderer.bitfield;
 
 import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.configloader.objectmapconfig.ObjectMapConfigSource;
+import in.spcct.spacedoc.configloader.objectmapconfig.ObjectMapFieldLoader;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import in.spcct.spacedoc.md.renderer.bitfield.parser.FieldTypeParser;
 import in.spcct.spacedoc.md.renderer.bitfield.parser.ParserException;
@@ -61,6 +63,16 @@ public class BitFieldParser {
 
     private void parseConfig(JSONObject configObject) {
         config = new BitFieldRenderer.Config();
+
+        if(configObject == null)
+            return; //use defaults
+
+        ObjectMapFieldLoader fieldLoader = new ObjectMapFieldLoader();
+        fieldLoader.loadFields(
+                new ObjectMapConfigSource(configObject.toMap()),
+                null,
+                config
+        );
     }
 
     private void parseData(JSONArray dataObjects) throws ParserException {
