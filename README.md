@@ -9,6 +9,26 @@ microcontrollers, tooling, etcetera.
 
 So far it is only intended to be used stand-alone for generating HTML out of extended markdown files.
 
+## How do I build it
+
+You will need:
+
+- GraalVM JDK supporting Java 11+
+    - Future revisions may not require GraalVM anymore; there is already some infrastructure in-place to make this
+      almost happen.
+      <br> By almost I mean it's not _quite_ happening yet, but it should be doable soon™. The only issue so far seems
+      to be some missing dependencies while running on OpenJDK. Will-fix.
+- Maven 3.6.3+
+- Some luck
+
+**TODO:** Actually document how it's supposed to be built. If you're feeling adventurous and impatient,
+try `mvn clean install` as usual.
+
+## How do I run it
+
+**TODO:** Actually document how it's supposed to be ran. If you're feeling adventurous and impatient, try
+running `in.spcct.spacedoc.exec.Main`.
+
 ## Features
 
 - [commonmark-java](https://github.com/commonmark/commonmark-java) -based rendering
@@ -33,6 +53,11 @@ procrastinate with, so who knows!
 - Templates
     - Best technical blog tool ever (jk)
 - Table-of-contents generation
-- Documentation generation from VHDL/(System)Verilog projects
+- Write a better readme, perhaps even saying how to even run this
+- Document usage, especially of the customized renderers
+- Actually package releases, and indeed release something
+- Add some way of using the customized renderers separately from the markdown stuff.
+    - Not sure how necessary this is, this is quite easy to hack around so far.
+- Documentation generation from VHDL/(System)Verilog/other projects
     - Parse all the comments
 - All the other things!
