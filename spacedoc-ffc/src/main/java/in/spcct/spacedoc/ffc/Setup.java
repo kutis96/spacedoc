@@ -2,8 +2,6 @@ package in.spcct.spacedoc.ffc;
 
 import in.spcct.spacedoc.cdi.SillyCDI;
 import in.spcct.spacedoc.config.helper.VariantDecider;
-import in.spcct.spacedoc.ffc.Graphviz;
-import in.spcct.spacedoc.ffc.Wavedrom;
 import in.spcct.spacedoc.ffc.cli.GraphvizCLI;
 import in.spcct.spacedoc.ffc.cli.WavedromCLI;
 import in.spcct.spacedoc.ffc.js.VizJS;
