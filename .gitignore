@@ -3,3 +3,8 @@
 # local testing
 js/*
 
+*.html
+*.css
+*.md
+*.svg
+!README.md
