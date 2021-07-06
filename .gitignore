@@ -1,7 +1,5 @@
-.idea/*
 */target/
 
 # local testing
 js/*
-src/test/*
 
