@@ -25,19 +25,19 @@ public class Setup {
 
     public static void registerExternalCodeRenderers() {
         Class<ExternalCodeRenderer> externalCodeRendererClass = ExternalCodeRenderer.class;
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 externalCodeRendererClass, 1, WavedromSvgRenderer::new
         );
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 externalCodeRendererClass, 1, GraphvizSvgRenderer::new
         );
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 externalCodeRendererClass, 1, BitFieldRendererExtension::new
         );
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 externalCodeRendererClass, 1, InstructionSetCodeRenderer::new
         );
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 externalCodeRendererClass, 1, MemoryMapCodeRenderer::new
         );
 
@@ -52,20 +52,20 @@ public class Setup {
 
     public static void registerBitFieldParsers() {
         Class<FieldTypeParser> fieldTypeParserClass = FieldTypeParser.class;
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 fieldTypeParserClass, 1, SeparatorParser::new
         );
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 fieldTypeParserClass, 1, RegisterParser::new
         );
     }
 
     public static void registerBitFieldRenderers() {
         Class<FieldTypeRenderer> fieldTypeRendererClass = FieldTypeRenderer.class;
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 fieldTypeRendererClass, 1, SeparatorRenderer::new
         );
-        SillyCDI.register(
+        SillyCDI.registerCaching(
                 fieldTypeRendererClass, 1, RegisterRenderer::new
         );
     }

@@ -5,6 +5,7 @@ import in.spcct.spacedoc.md.renderer.ExternalCodeRenderer;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 public class ExternalCodeRendererStore {
 
@@ -26,6 +27,10 @@ public class ExternalCodeRendererStore {
 
     public ExternalCodeRenderer lookup(String languageName) {
         return rendererStore.get(languageName.toLowerCase(Locale.ROOT));
+    }
+
+    public Set<String> listLanguages() {
+        return rendererStore.keySet();
     }
 
 }

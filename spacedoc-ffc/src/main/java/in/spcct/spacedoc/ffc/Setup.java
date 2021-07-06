@@ -11,10 +11,10 @@ public class Setup {
     static final VariantDecider variantDecider = new VariantDecider();
 
     public static void registerAll() {
-        SillyCDI.register(Wavedrom.class, 100, variantDecider::canRunJS, WavedromJS::new);
-        SillyCDI.register(Wavedrom.class, 0, WavedromCLI::new);
+        SillyCDI.registerCaching(Wavedrom.class, 100, variantDecider::canRunJS, WavedromJS::new);
+        SillyCDI.registerCaching(Wavedrom.class, 0, WavedromCLI::new);
 
-        SillyCDI.register(Graphviz.class, 100, variantDecider::canRunJS, VizJS::new);
-        SillyCDI.register(Graphviz.class, 0, GraphvizCLI::new);
+        SillyCDI.registerCaching(Graphviz.class, 100, variantDecider::canRunJS, VizJS::new);
+        SillyCDI.registerCaching(Graphviz.class, 0, GraphvizCLI::new);
     }
 }

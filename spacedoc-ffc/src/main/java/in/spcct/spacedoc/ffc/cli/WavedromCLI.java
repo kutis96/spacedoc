@@ -2,7 +2,7 @@ package in.spcct.spacedoc.ffc.cli;
 
 import in.spcct.spacedoc.config.GeneralConfig;
 import in.spcct.spacedoc.ffc.Wavedrom;
-import in.spcct.spacedoc.ffc.utils.SerializationUtil;
+import in.spcct.spacedoc.ffc.util.SerializationUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 public class WavedromCLI implements Wavedrom {
 
-    private GeneralConfig envConfig = GeneralConfig.getInstance();
+    private final GeneralConfig envConfig = GeneralConfig.getInstance();
 
     private File processSVG(String input) throws IOException, InterruptedException {
 

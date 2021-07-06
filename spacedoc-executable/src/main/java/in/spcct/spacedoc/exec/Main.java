@@ -1,140 +1,83 @@
 package in.spcct.spacedoc.exec;
 
-import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererExtension;
-import org.apache.commons.cli.*;
-import org.commonmark.Extension;
-import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
-import org.commonmark.ext.gfm.tables.TablesExtension;
-import org.commonmark.node.Node;
-import org.commonmark.parser.Parser;
-import org.commonmark.renderer.html.HtmlRenderer;
+import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.module.Module;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 public class Main {
 
-    private static void doTheThing(File inputFile, File outputFile, File prefix, File suffix) {
-        List<Extension> extensions = Arrays.asList(
-                TablesExtension.create(),
-                StrikethroughExtension.create(),
-                ExternalCodeRendererExtension.create()
-        );
+    public static void main(String[] args) throws Exception {
 
-        Parser parser = Parser.builder()
-                .extensions(extensions)
-                .build();
-        HtmlRenderer renderer = HtmlRenderer.builder()
-                .extensions(extensions)
-                .build();
+        Setup.registerAll();
 
-        Node document;
-        try (FileReader fileReader = new FileReader(inputFile)) {
-            document = parser.parseReader(fileReader);
-        } catch (IOException e) {
-            throw new RuntimeException("Oh fiddlesticks, what now?", e);
+        //1) Find module or print help
+        //2) Strip initial module argument
+        //3) Dispatch remaining arguments to module
+
+        String moduleName;
+        if (args == null || args.length == 0) {
+            //print help, somehow
+            moduleName = "help";
+        } else {
+            moduleName = args[0];
         }
 
-        try (FileWriter fileWriter = new FileWriter(outputFile)) {
-            copyInto(fileWriter, prefix);
-            renderer.render(document, fileWriter);
-            copyInto(fileWriter, suffix);
-        } catch (IOException e) {
-            throw new RuntimeException("Oh fiddlesticks, what now?", e);
-        }
-    }
+        Module module = lookupModule(moduleName);
 
-    private static void copyInto(FileWriter fileWriter, File content) {
-        if(content == null)
-            return;
-
-        try (FileReader fileReader = new FileReader(content)){
-
-            char[] buffer = new char[4096];
-            int n = 0;
-            while (-1 != (n = fileReader.read(buffer))) {
-                fileWriter.write(buffer, 0, n);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        module.run(stripInitialArgument(args));
 
     }
 
-    public static void main(String[] args) throws ParseException {
+    private static String[] stripInitialArgument(String[] args) {
+        if (args == null || args.length < 1)
+            return new String[]{};
 
-        in.spcct.spacedoc.md.Setup.registerAll();
-        in.spcct.spacedoc.ffc.Setup.registerAll();
+        return Arrays.copyOfRange(args, 1, args.length);
+    }
 
-        //TODO:
-        // - Split into "subprograms"
-        // - - Render markdown
-        // - - - Must be able to load external config for renderers, somehow
-        // - - Render individual file formats
-        // - - - Load external config too
+    private static List<Module> getModules() {
+        return SillyCDI.lookupAll(Module.class, 0);
+    }
 
-        Options cliOptions = new Options();
-        cliOptions
-                .addOption("i", "input", true, "Markdown file. Must be specified.")
-                .addOption("o", "output", true, "Output html. When none is specified, an output file will be processed at the same path as the input file, with .html extension attached instead of the original one.")
-                .addOption("head", true, "Prefix this file to the output html. Optional.")
-                .addOption("tail", true, "Suffix this file to the output html. Optional.")
-                .addOption("h", "help", false, "Get help");
+    private static Module lookupModule(String moduleName) {
+        Optional<Module> maybeModule = getModules()
+                .stream()
+                .filter(m -> m.getLongName().equalsIgnoreCase(moduleName) || m.getShortName().equalsIgnoreCase(moduleName))
+                .findFirst();
 
-        CommandLineParser commandLineParser = new DefaultParser();
-        CommandLine commandLine = commandLineParser.parse(cliOptions, args);
+        return maybeModule.orElseGet(Main::getHelpModule);
+    }
 
-        if (commandLine.hasOption("h")) {
-            HelpFormatter helpFormatter = new HelpFormatter();
-            helpFormatter.printHelp("SpaceDoc", cliOptions);
-            return;
-        }
-
-        File inputFile, outputFile;
-        File prefixFile = null, suffixFile = null;
-
-        if (commandLine.hasOption("i")) {
-            String path = commandLine.getOptionValue("i");
-            inputFile = new File(path);
-        } else {
-            System.err.println("No input file specified!");
-            return;
-        }
-
-        if (commandLine.hasOption("o")) {
-            String path = commandLine.getOptionValue("o");
-            outputFile = new File(path);
-        } else {
-            String newName = inputFile.getName();
-
-            int lastDot = newName.lastIndexOf('.');
-            if(lastDot != -1) {
-                //strip old extension
-                newName = newName.substring(0, lastDot);
+    private static Module getHelpModule() {
+        return new Module() {
+            @Override
+            public String getLongName() {
+                return "help";
             }
 
-            newName += ".html";
+            @Override
+            public String getDescription() {
+                return "Prints this help";
+            }
 
-            outputFile = new File(inputFile.getParent(), newName);
-        }
-
-        if (commandLine.hasOption("head")) {
-            String path = commandLine.getOptionValue("head");
-            prefixFile = new File(path);
-        }
-
-        if (commandLine.hasOption("tail")) {
-            String path = commandLine.getOptionValue("tail");
-            suffixFile = new File(path);
-        }
-
-        doTheThing(inputFile, outputFile, prefixFile, suffixFile);
-
-        System.out.println(inputFile.getAbsolutePath() + " -> " + outputFile.getAbsolutePath());
+            @Override
+            public void run(String[] args) {
+                //TODO: Render help, somehow
+                System.out.println("Usage: spacedoc [module] <arguments...>");
+                System.out.println("Usage: spacedoc [module] help");
+                System.out.println("Modules:");
+                System.out.printf(
+                        "%16s : %s\n", "(Module)", "(Description)"
+                );
+                for (Module module : getModules()) {
+                    System.out.printf(
+                            "%16s : %s\n", module.getLongName(), module.getDescription()
+                    );
+                }
+            }
+        };
     }
 }

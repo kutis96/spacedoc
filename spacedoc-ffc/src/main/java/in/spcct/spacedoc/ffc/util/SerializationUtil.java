@@ -1,4 +1,4 @@
-package in.spcct.spacedoc.ffc.utils;
+package in.spcct.spacedoc.ffc.util;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

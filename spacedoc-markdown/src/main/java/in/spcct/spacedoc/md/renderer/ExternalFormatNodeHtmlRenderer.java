@@ -1,6 +1,6 @@
 package in.spcct.spacedoc.md.renderer;
 
-import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererStore;
+import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererCore;
 import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.Node;
 import org.commonmark.renderer.html.CoreHtmlNodeRenderer;
@@ -35,18 +35,17 @@ public class ExternalFormatNodeHtmlRenderer extends FencedCodeBlockRenderer {
 
         String languageName = codeBlock.getInfo().toLowerCase(Locale.ROOT);
 
-        ExternalCodeRenderer renderer = ExternalCodeRendererStore.getInstance()
-                .lookup(languageName);
-
-        if (renderer == null) {
-            //render defaults
-            coreHtmlNodeRenderer.render(node);
-            return;
-        }
+        ExternalCodeRendererCore core = new ExternalCodeRendererCore();
 
         String svg;
         try {
-            svg = renderer.renderSvg(codeBlock.getLiteral());
+            svg = core.render(languageName, ((FencedCodeBlock) node).getLiteral());
+
+            if (svg == null) {
+                //render defaults
+                coreHtmlNodeRenderer.render(node);
+                return;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             svg = generateErrorSVG(e);
@@ -60,7 +59,6 @@ public class ExternalFormatNodeHtmlRenderer extends FencedCodeBlockRenderer {
         html.line();
         Map<String, String> stuff = new HashMap<>();
         stuff.put("class", languageName + "-image image");  //TODO: Make CSS classes configurable
-//        html.tag("div", attributes);
         html.tag("div", stuff);
         html.raw(literal);
         html.tag("/div");

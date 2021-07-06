@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
+        <module>spacedoc-common</module>
         <module>spacedoc-config</module>
         <module>spacedoc-ffc</module>
         <module>spacedoc-markdown</module>
