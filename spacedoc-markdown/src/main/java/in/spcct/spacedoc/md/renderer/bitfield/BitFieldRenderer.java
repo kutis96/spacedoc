@@ -6,7 +6,9 @@ import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.Register;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.FieldTypeRenderer;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.xml.LiteXmlBuilder;
+import lombok.AccessLevel;
 import lombok.Data;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Arrays;
 import java.util.List;
@@ -130,6 +132,7 @@ public class BitFieldRenderer {
     }
 
     @Data
+    @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Config {
 
         @Property(value = "font-size", required = false)

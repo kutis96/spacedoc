@@ -3,19 +3,26 @@ package in.spcct.spacedoc.config;
 import in.spcct.spacedoc.configloader.ConfigFile;
 import in.spcct.spacedoc.configloader.Property;
 import in.spcct.spacedoc.configloader.propconfig.AbstractPropertiesFileConfig;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldDefaults;
 
 /**
  * General configuration of SpaceDoc.
  */
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false)
 @ConfigFile(
         value = "/config/spacedoc.properties",
         prefix = "general"
 )
 public class GeneralConfig extends AbstractPropertiesFileConfig {
+
+    private GeneralConfig() {
+        loadConfig();
+    }
 
     /**
      * Prefix of SpaceDoc temporary files.

@@ -2,7 +2,9 @@ package in.spcct.spacedoc.config;
 
 
 import in.spcct.spacedoc.configloader.ConfigFile;
+import in.spcct.spacedoc.configloader.Converter;
 import in.spcct.spacedoc.configloader.Property;
+import in.spcct.spacedoc.configloader.fieldmap.converter.EnumConverter;
 import in.spcct.spacedoc.configloader.propconfig.AbstractPropertiesFileConfig;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +20,10 @@ import lombok.EqualsAndHashCode;
 )
 public class FFCConfig extends AbstractPropertiesFileConfig {
 
+    private FFCConfig() {
+        loadConfig();
+    }
+
     /**
      * Path to Node.JS' "npx" executable
      * <p>
@@ -27,12 +33,11 @@ public class FFCConfig extends AbstractPropertiesFileConfig {
     private String npxExecutable;
 
     /**
-     * Set to true if JavaScript implementations of foreign functions are preferred over any others.
-     * <p>
-     * Typically useful when installing Node.JS is easier than installing other dependencies.
+     *
      */
     @Property(required = false)
-    private Boolean forceJS = false;
+    @Converter(EnumConverter.class)
+    private EnableDisableAuto polyglotJs = EnableDisableAuto.AUTO;
 
 
     private static FFCConfig INSTANCE = new FFCConfig();

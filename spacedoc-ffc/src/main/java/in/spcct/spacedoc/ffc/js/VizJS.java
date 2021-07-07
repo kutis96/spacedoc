@@ -7,7 +7,7 @@ import in.spcct.spacedoc.ffc.Graphviz;
  * <p>
  * (https://github.com/mdaines/viz.js)
  */
-public class VizJS extends JavascriptRunner implements Graphviz {
+public class VizJS extends PolyglotJsRunner implements Graphviz {
 
     @Override
     protected void init() {

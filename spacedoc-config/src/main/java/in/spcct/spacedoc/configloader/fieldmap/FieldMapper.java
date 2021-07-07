@@ -1,6 +1,7 @@
 package in.spcct.spacedoc.configloader.fieldmap;
 
 import in.spcct.spacedoc.configloader.ConfigSource;
+import in.spcct.spacedoc.configloader.Converter;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.Field;
@@ -8,7 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
- *
  * @param <V> base type for value conversions
  */
 public abstract class FieldMapper<V> {
@@ -37,11 +37,24 @@ public abstract class FieldMapper<V> {
                 Class<?> fieldType = field.getType();
                 Object convertedValue;
 
-                convertedValue = convertItem(propertyName, value, fieldType);
+                Converter converter = field.getAnnotation(Converter.class);
+                if (converter != null) {
+                    FieldConverter fieldConverter = converter.value()
+                            .getDeclaredConstructor().newInstance();
 
+                    //hacky hack hack
+                    convertedValue = fieldConverter.convert(String.valueOf(value), mapping);
+
+                } else {
+                    convertedValue = convertItem(propertyName, value, fieldType);
+                }
+
+                Object originalValue = BeanUtils.getProperty(targetObject, field.getName());
                 BeanUtils.setProperty(targetObject, field.getName(), convertedValue);
             } catch (InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to map property: Field access exception", e);
+                throw new RuntimeException("Failed to map property: Field access exception for field " + field.getName() + " of " + field.getDeclaringClass().getCanonicalName(), e);
+            } catch (NoSuchMethodException | InstantiationException e) {
+                throw new RuntimeException("Failed to instantiate converter for field " + field.getName() + " of " + field.getDeclaringClass().getCanonicalName(), e);
             }
         });
     }

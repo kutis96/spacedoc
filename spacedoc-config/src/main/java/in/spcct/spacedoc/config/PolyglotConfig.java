@@ -3,16 +3,23 @@ package in.spcct.spacedoc.config;
 import in.spcct.spacedoc.configloader.ConfigFile;
 import in.spcct.spacedoc.configloader.Property;
 import in.spcct.spacedoc.configloader.propconfig.AbstractPropertiesFileConfig;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldDefaults;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false)
 @ConfigFile(
         value = "/config/spacedoc.properties",
         prefix = "polyglot"
 )
 public class PolyglotConfig extends AbstractPropertiesFileConfig {
+
+    private PolyglotConfig() {
+        loadConfig();
+    }
 
     /**
      * Directory to be used for require():d NPM modules

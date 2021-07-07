@@ -28,7 +28,6 @@ public class PropertyConfigFieldLoader implements FieldLoader<PropertyConfigSour
 
     @Override
     public void loadFields(PropertyConfigSource configSource, Object targetObject, String... basePathSegments) {
-
         String pathPrefix = (basePathSegments == null || basePathSegments.length == 0) ? null :
                 String.join(pathSeparator, basePathSegments);
 

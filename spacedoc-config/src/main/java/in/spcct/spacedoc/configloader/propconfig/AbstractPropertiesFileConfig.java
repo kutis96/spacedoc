@@ -30,19 +30,19 @@ public abstract class AbstractPropertiesFileConfig {
     private final ConfigFile propertyFileConfig;
 
     /**
-     * Loads the configuring {@link ConfigFile} annotation annotating the implementing class,
-     * and initiates field loading according to the configuration.
+     * Loads the configuring {@link ConfigFile} annotation annotating the implementing class.
+     * <p>
+     * Please do call {@link #loadConfig()} in the constructor of the implementing class to correctly initialize all values.
      */
-    public AbstractPropertiesFileConfig() {
+    protected AbstractPropertiesFileConfig() {
         this.propertyFileConfig = this.getClass().getAnnotation(ConfigFile.class);
-        loadFields();
     }
 
-    private void loadFields() {
+    protected void loadConfig() {
         if (propertyFileConfig == null)
             throw new UnsupportedOperationException("No @PropertyFile annotation has been specified on this class.");
 
-        loadFields(
+        loadConfig(
                 propertyFileConfig.value(),
                 propertyFileConfig.prefix()
         );
@@ -56,7 +56,7 @@ public abstract class AbstractPropertiesFileConfig {
      * @throws FileNotFoundException sneakily throws this exception whenever the property file specified cannot be found.
      */
     @SneakyThrows
-    private void loadFields(String propertiesFilePath, String prefix) {
+    private void loadConfig(String propertiesFilePath, String prefix) {
         Properties properties = new Properties();
 
         try (InputStream inputStream = this.getClass().getResourceAsStream(propertiesFilePath)) {
@@ -66,7 +66,7 @@ public abstract class AbstractPropertiesFileConfig {
             properties.load(inputStream);
         }
 
-        loadFields(properties, prefix);
+        loadConfig(properties, prefix);
     }
 
     /**
@@ -75,7 +75,7 @@ public abstract class AbstractPropertiesFileConfig {
      * @param properties Properties file of to load the values from
      * @param prefix     prefix of all values to be loaded. Null when no prefix is to be prepended.
      */
-    private void loadFields(Properties properties, String prefix) {
+    private void loadConfig(Properties properties, String prefix) {
         fieldLoader.loadFields(
                 properties,
                 prefix,

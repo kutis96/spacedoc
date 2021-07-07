@@ -13,11 +13,11 @@ import java.util.Map;
 /**
  * A simple wrapper for running JavaScript code via the GraalVM polyglot feature.
  */
-public abstract class JavascriptRunner {
+public abstract class PolyglotJsRunner {
 
     protected final Context context;
 
-    public JavascriptRunner() {
+    public PolyglotJsRunner() {
 
         File requireDir = new File(PolyglotConfig.getInstance().getRequireCwd());
 

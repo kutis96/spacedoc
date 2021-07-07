@@ -2,7 +2,7 @@ package in.spcct.spacedoc.ffc.js;
 
 import in.spcct.spacedoc.ffc.Wavedrom;
 
-public class WavedromJS extends JavascriptRunner implements Wavedrom  {
+public class WavedromJS extends PolyglotJsRunner implements Wavedrom {
 
     @Override
     protected void init() {

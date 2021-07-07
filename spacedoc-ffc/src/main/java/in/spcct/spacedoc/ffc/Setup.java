@@ -14,10 +14,10 @@ public class Setup {
      * Registers all known renderer implementations, along with their variant decision logic.
      */
     public static void registerAll() {
-        SillyCDI.registerCaching(Wavedrom.class, 100, variantDecider::canRunJS, WavedromJS::new);
+        SillyCDI.registerCaching(Wavedrom.class, 100, variantDecider::supportsPolyglotJS, WavedromJS::new);
         SillyCDI.registerCaching(Wavedrom.class, 0, WavedromCLI::new);
 
-        SillyCDI.registerCaching(Graphviz.class, 100, variantDecider::canRunJS, VizJS::new);
+        SillyCDI.registerCaching(Graphviz.class, 100, variantDecider::supportsPolyglotJS, VizJS::new);
         SillyCDI.registerCaching(Graphviz.class, 0, GraphvizCLI::new);
     }
 }
