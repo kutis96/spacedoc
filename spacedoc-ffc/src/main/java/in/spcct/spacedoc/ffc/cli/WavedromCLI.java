@@ -1,23 +1,25 @@
 package in.spcct.spacedoc.ffc.cli;
 
-import in.spcct.spacedoc.config.GeneralConfig;
+import in.spcct.spacedoc.common.util.FileUtils;
+import in.spcct.spacedoc.common.util.StringUtils;
 import in.spcct.spacedoc.ffc.Wavedrom;
-import in.spcct.spacedoc.ffc.util.SerializationUtil;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Renders "wavedrom"-formatted source strings using the "wavedrom-cli".
+ * <p>
+ * See https://github.com/wavedrom/cli/
+ */
 public class WavedromCLI implements Wavedrom {
-
-    private final GeneralConfig envConfig = GeneralConfig.getInstance();
 
     private File processSVG(String input) throws IOException, InterruptedException {
 
-        File inputFile = File.createTempFile(envConfig.getTempFilePrefix(), ".json5");
+        File inputFile = FileUtils.createTempFile(".json5");
 
         String x = inputFile.getAbsolutePath();
         System.out.println(x);
@@ -26,14 +28,14 @@ public class WavedromCLI implements Wavedrom {
             fileWriter.write(input);
         }
 
-        File outputFile = File.createTempFile(envConfig.getTempFilePrefix(), ".svg");
+        File outputFile = FileUtils.createTempFile(".svg");
 
         Process process = processSVG(inputFile, outputFile);
 
         process.waitFor(60, TimeUnit.SECONDS);
 
         if (process.exitValue() > 0) {
-            throw new IOException("Failed to Render:\n" + SerializationUtil.serialize(process.getErrorStream()));
+            throw new IOException("Failed to Render:\n" + StringUtils.serialize(process.getErrorStream()));
         }
 
         inputFile.deleteOnExit();
@@ -44,18 +46,14 @@ public class WavedromCLI implements Wavedrom {
 
     public Process processSVG(File input, File output) throws IOException {
         return NpxRunner.getInstance().execute(
-                "bit-field",
-                "-i", input.getAbsolutePath(),
-                "-s", output.getAbsolutePath()
+                "wavedrom-cli",
+                "-i", input.getAbsolutePath(),  //take this input
+                "-s", output.getAbsolutePath()  //render to SVG
         );
     }
 
     @Override
     public String renderToSVG(String source) throws IOException, InterruptedException {
-        List<String> lines = Files.readAllLines(
-            processSVG(source).toPath()
-        );
-
-        return SerializationUtil.concatenate(lines);
+        return Files.readString(processSVG(source).toPath());
     }
 }

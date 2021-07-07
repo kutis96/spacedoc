@@ -1,5 +1,8 @@
 package in.spcct.spacedoc.md.renderer.bitfield.renderer.xml;
 
+/**
+ * Contains several utility functions for generating common SVG objects.
+ */
 public class SvgUtils {
     public static LiteXmlBuilder rect(Integer x, Integer y, Integer width, Integer height) {
         return new LiteXmlBuilder("rect")

@@ -1,6 +1,6 @@
 package in.spcct.spacedoc.module;
 
-import in.spcct.spacedoc.util.StringUtils;
+import in.spcct.spacedoc.common.util.StringUtils;
 
 public interface Module {
 

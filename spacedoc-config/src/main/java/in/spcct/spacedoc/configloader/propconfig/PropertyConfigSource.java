@@ -12,13 +12,17 @@ public class PropertyConfigSource implements ConfigSource<String> {
         this.properties = properties;
     }
 
-    @Override
-    public boolean containsKey(String path) {
-        return properties.containsKey(path);
+    private String pathToKey(String... pathSegments) {
+        return String.join(".", pathSegments);
     }
 
     @Override
-    public String getValue(String path) {
-        return properties.getProperty(path);
+    public boolean containsItem(String... pathSegments) {
+        return properties.containsKey(pathToKey(pathSegments));
+    }
+
+    @Override
+    public String getItem(String... pathSegments) {
+        return properties.getProperty(pathToKey(pathSegments));
     }
 }

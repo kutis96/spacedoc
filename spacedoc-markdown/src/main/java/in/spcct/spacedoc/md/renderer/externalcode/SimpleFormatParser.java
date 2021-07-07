@@ -4,9 +4,28 @@ import lombok.Data;
 
 import java.util.Optional;
 
+/**
+ * A parser for simple, line-oriented "DSL" parsing.
+ * Supports comments and additional key: value configuration parsing.
+ * <p>
+ * The parser provides visitor methods for dealing with configuration
+ * and source code lines directly as they're encountered.
+ * <p>
+ * A simplified grammar:
+ * <pre>
+ * source ::= line*
+ * line ::= \s* (config | source) \s* comment?
+ * comment ::= "//" .+$
+ * config ::= key \s* ":" \s* value
+ * source ::= ...
+ * key ::= ...
+ * value ::= ...
+ * </pre>
+ */
 public abstract class SimpleFormatParser {
 
     protected String configInitializer = "--";
+    protected String commentInitializer = "//";
     protected String keyValueSeparator = ":";
 
     public void parse(String source) {
@@ -17,10 +36,10 @@ public abstract class SimpleFormatParser {
     }
 
     public void parseLine(String line) {
-        if(line == null)
+        if (line == null)
             return;
 
-        line = line.strip();
+        line = line.replaceAll(commentInitializer + ".+$", "").strip();
 
         if (line.startsWith(configInitializer)) {
             Optional<KVEntry> configEntry = parseConfigLine(line);
@@ -56,11 +75,23 @@ public abstract class SimpleFormatParser {
         );
     }
 
+    /**
+     * Visitor method for dealing with configuration entries.
+     *
+     * @param entry configuration entry
+     */
     public abstract void dealWithConfigEntry(KVEntry entry);
 
+    /**
+     * Visitor method for dealing with source lines.
+     *
+     * @param line line of source code
+     */
     public abstract void dealWithSourceLine(String line);
 
-
+    /**
+     * Represents a single Key: Value configuration entry.
+     */
     @Data
     public static class KVEntry {
         private final String key;

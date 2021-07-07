@@ -1,11 +1,9 @@
 package in.spcct.spacedoc.exec.module;
 
-import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererExtension;
+import in.spcct.spacedoc.cdi.SillyCDI;
 import in.spcct.spacedoc.module.Module;
 import org.apache.commons.cli.*;
 import org.commonmark.Extension;
-import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
-import org.commonmark.ext.gfm.tables.TablesExtension;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
@@ -14,9 +12,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Module for rendering markdown formatted SpaceDoc documents.
+ */
 public class MarkdownModule implements Module {
     @Override
     public String getLongName() {
@@ -90,11 +90,7 @@ public class MarkdownModule implements Module {
     }
 
     private void doTheThing(File inputFile, File outputFile, File prefix, File suffix) {
-        List<Extension> extensions = Arrays.asList(
-                TablesExtension.create(),
-                StrikethroughExtension.create(),
-                ExternalCodeRendererExtension.create()
-        );
+        List<Extension> extensions = SillyCDI.lookupAll(Extension.class, 0);
 
         org.commonmark.parser.Parser parser = Parser.builder()
                 .extensions(extensions)
@@ -119,6 +115,12 @@ public class MarkdownModule implements Module {
         }
     }
 
+    /**
+     * Appendes the content of the specified file into the given file writer.
+     *
+     * @param fileWriter writer to append into
+     * @param content    content to be appended
+     */
     private static void copyInto(FileWriter fileWriter, File content) {
         if (content == null)
             return;

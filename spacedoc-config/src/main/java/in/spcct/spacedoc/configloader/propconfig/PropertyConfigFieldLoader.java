@@ -23,12 +23,16 @@ public class PropertyConfigFieldLoader implements FieldLoader<PropertyConfigSour
     }
 
     public void loadFields(Properties properties, String basePrefix, Object o) {
-        loadFields(new PropertyConfigSource(properties), basePrefix, o);
+        loadFields(new PropertyConfigSource(properties), o, basePrefix);
     }
 
     @Override
-    public void loadFields(PropertyConfigSource configSource, String basePrefix, Object targetObject) {
-        List<FieldMapping> mappings = LoaderUtils.deriveFieldMappings(basePrefix, targetObject.getClass(), pathSeparator);
+    public void loadFields(PropertyConfigSource configSource, Object targetObject, String... basePathSegments) {
+
+        String pathPrefix = (basePathSegments == null || basePathSegments.length == 0) ? null :
+                String.join(pathSeparator, basePathSegments);
+
+        List<FieldMapping> mappings = LoaderUtils.deriveFieldMappings(pathPrefix, targetObject.getClass(), pathSeparator);
         fieldMapper.mapAll(mappings, configSource, targetObject);
     }
 

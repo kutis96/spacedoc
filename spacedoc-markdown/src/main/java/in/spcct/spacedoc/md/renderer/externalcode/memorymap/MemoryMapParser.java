@@ -43,8 +43,6 @@ public class MemoryMapParser extends SimpleFormatParser {
         if (sourceLine.isEmpty() || sourceLine.isBlank())
             return Optional.empty();
 
-        sourceLine = sourceLine.trim();
-
         Matcher matcher = pattern.matcher(sourceLine);
 
         if(!matcher.matches())

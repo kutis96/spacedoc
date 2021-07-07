@@ -1,5 +1,6 @@
 package in.spcct.spacedoc.md.renderer;
 
+import in.spcct.spacedoc.common.util.StringUtils;
 import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererCore;
 import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.Node;
@@ -12,19 +13,44 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * An extension of the CommonMark {@link FencedCodeBlockRenderer}.
+ * <p>
+ * Supports rendering of various custom languages, the renderers of which are currently registered in {@link in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererStore}.
+ * <p>
+ * If no renderer for the specified language is found, a fallback to the default renderer occurs.
+ */
 public class ExternalFormatNodeHtmlRenderer extends FencedCodeBlockRenderer {
 
     private final HtmlNodeRendererContext context;
-    private final HtmlWriter html;
+    private final HtmlWriter htmlWriter;
 
     private final CoreHtmlNodeRenderer coreHtmlNodeRenderer;
 
     public ExternalFormatNodeHtmlRenderer(HtmlNodeRendererContext context) {
         this.context = context;
-        this.html = context.getWriter();
+        this.htmlWriter = context.getWriter();
         this.coreHtmlNodeRenderer = new CoreHtmlNodeRenderer(context);
     }
 
+    /**
+     * Attempts to render a {@link FencedCodeBlock}.
+     * <p>
+     * Fenced code blocks look a little like this:
+     * <pre>
+     *     ```language-name
+     *          ...
+     *          some code in this language
+     *          ...
+     *     ```
+     * </pre>
+     * <p>
+     * The language-name string is extracted, and used for determining the renderer to be used for rendering of the enclosed code.
+     * <p>
+     * The main rendering logic has been extracted to {@link ExternalCodeRendererCore} to simplify code reuse within this project.
+     *
+     * @param node
+     */
     @Override
     public void render(Node node) {
         if (!(node instanceof FencedCodeBlock))
@@ -37,15 +63,15 @@ public class ExternalFormatNodeHtmlRenderer extends FencedCodeBlockRenderer {
 
         ExternalCodeRendererCore core = new ExternalCodeRendererCore();
 
+        if (!core.canRender(languageName)) {
+            //render defaults
+            coreHtmlNodeRenderer.render(node);
+            return;
+        }
+
         String svg;
         try {
             svg = core.render(languageName, ((FencedCodeBlock) node).getLiteral());
-
-            if (svg == null) {
-                //render defaults
-                coreHtmlNodeRenderer.render(node);
-                return;
-            }
         } catch (Exception e) {
             e.printStackTrace();
             svg = generateErrorSVG(e);
@@ -55,31 +81,40 @@ public class ExternalFormatNodeHtmlRenderer extends FencedCodeBlockRenderer {
         renderSVG(svg, languageName, attributes);
     }
 
-    private void renderSVG(String literal, String languageName, Map<String, String> attributes) {
-        html.line();
-        Map<String, String> stuff = new HashMap<>();
-        stuff.put("class", languageName + "-image image");  //TODO: Make CSS classes configurable
-        html.tag("div", stuff);
-        html.raw(literal);
-        html.tag("/div");
-        html.line();
+    /**
+     * Renders the given "SVG" content into an enclosing div into the {@link #htmlWriter} object.
+     *
+     * <pre>
+     *     <div class="[languageName]-image image" [attributes]>
+     *         [literalContent]
+     *     </div>
+     * </pre>
+     *
+     * @param literalContent content to render
+     * @param languageName   name of the language
+     * @param attributes     map of attributes to be put in the enclosing div
+     */
+    private void renderSVG(String literalContent, String languageName, Map<String, String> attributes) {
+        htmlWriter.line();
+        Map<String, String> actualAttributes = (attributes == null) ? new HashMap<>() : attributes;
+        actualAttributes.put("class", languageName + "-image image");  //TODO: Make CSS classes configurable
+        htmlWriter.tag("div", actualAttributes);
+        htmlWriter.raw(literalContent);
+        htmlWriter.tag("/div");
+        htmlWriter.line();
     }
 
+    /**
+     * Creates an "SVG"/HTML string containing a serialized exception stack trace to aid with debugging.
+     *
+     * @param e exception to serialize
+     * @return HTML string
+     */
     private String generateErrorSVG(Exception e) {
-        return "<svg viewBox=\"0 0 240 80\" xmlns=\"http://www.w3.org/2000/svg\">\n" +
-                "  <style>\n" +
-                "    .small { font: italic 13px sans-serif; }\n" +
-                "    .heavy { font: bold 30px sans-serif; }\n" +
-                "\n" +
-                "    /* Note that the color of the text is set with the    *\n" +
-                "     * fill property, the color property is for HTML only */\n" +
-                "    .Rrrrr { font: italic 40px serif; fill: red; }\n" +
-                "  </style>\n" +
-                "\n" +
-                "  <text x=\"20\" y=\"35\" class=\"small\">My</text>\n" +
-                "  <text x=\"40\" y=\"35\" class=\"heavy\">cat</text>\n" +
-                "  <text x=\"55\" y=\"55\" class=\"small\">is</text>\n" +
-                "  <text x=\"65\" y=\"55\" class=\"Rrrrr\">Grumpy!</text>\n" +
-                "</svg>";
+        return "<div class=\"error\">" +
+                "<pre>" +
+                StringUtils.toStackTraceString(e) +
+                "</pre>" +
+                "</div>";
     }
 }

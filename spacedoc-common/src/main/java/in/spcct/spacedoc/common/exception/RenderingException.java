@@ -1,5 +1,8 @@
-package in.spcct.spacedoc.md.renderer;
+package in.spcct.spacedoc.common.exception;
 
+/**
+ * An exception to be thrown in case something goes wrong while rendering something.
+ */
 public class RenderingException extends Exception {
     public RenderingException() {
     }

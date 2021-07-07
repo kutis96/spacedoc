@@ -20,8 +20,11 @@ public class ObjectMapFieldLoader implements FieldLoader<ObjectMapConfigSource> 
     }
 
     @Override
-    public void loadFields(ObjectMapConfigSource configSource, String basePath, Object targetObject) {
-        List<FieldMapping> fieldMappings = LoaderUtils.deriveFieldMappings(basePath, targetObject.getClass(), pathSeparator);
+    public void loadFields(ObjectMapConfigSource configSource, Object targetObject, String... basePathSegments) {
+        String pathPrefix = (basePathSegments == null || basePathSegments.length == 0) ? null :
+                String.join(pathSeparator, basePathSegments);
+
+        List<FieldMapping> fieldMappings = LoaderUtils.deriveFieldMappings(pathPrefix, targetObject.getClass(), pathSeparator);
         fieldMapper.mapAll(fieldMappings, configSource, targetObject);
     }
 

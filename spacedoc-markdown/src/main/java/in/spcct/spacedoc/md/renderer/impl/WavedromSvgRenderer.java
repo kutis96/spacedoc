@@ -1,12 +1,17 @@
 package in.spcct.spacedoc.md.renderer.impl;
 
 import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.common.exception.RenderingException;
 import in.spcct.spacedoc.ffc.Wavedrom;
 import in.spcct.spacedoc.md.renderer.ExternalCodeRenderer;
-import in.spcct.spacedoc.md.renderer.RenderingException;
 
 import java.io.IOException;
 
+/**
+ * External code renderer for the "wavedrom" format.
+ * <p>
+ * Renders https://github.com/wavedrom/wavedrom formatted JSON5 source strings to SVG.
+ */
 public class WavedromSvgRenderer implements ExternalCodeRenderer {
 
     @Override

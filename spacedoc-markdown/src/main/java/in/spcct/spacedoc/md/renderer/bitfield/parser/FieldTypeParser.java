@@ -1,5 +1,6 @@
 package in.spcct.spacedoc.md.renderer.bitfield.parser;
 
+import in.spcct.spacedoc.common.exception.ParserException;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import org.json.JSONObject;
 

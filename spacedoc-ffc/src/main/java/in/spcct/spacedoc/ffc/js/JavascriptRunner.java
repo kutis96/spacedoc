@@ -10,6 +10,9 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A simple wrapper for running JavaScript code via the GraalVM polyglot feature.
+ */
 public abstract class JavascriptRunner {
 
     protected final Context context;

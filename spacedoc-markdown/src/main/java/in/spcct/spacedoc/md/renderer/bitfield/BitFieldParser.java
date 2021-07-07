@@ -1,11 +1,11 @@
 package in.spcct.spacedoc.md.renderer.bitfield;
 
 import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.common.exception.ParserException;
 import in.spcct.spacedoc.configloader.objectmapconfig.ObjectMapConfigSource;
 import in.spcct.spacedoc.configloader.objectmapconfig.ObjectMapFieldLoader;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import in.spcct.spacedoc.md.renderer.bitfield.parser.FieldTypeParser;
-import in.spcct.spacedoc.md.renderer.bitfield.parser.ParserException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,18 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * {
- *     "fields": [
- *          {
- *              "type":...
- *              ...
- *          },
- *          ...
- *     ],
- *     "config": {
- *          ...
- *     }
- * }
+ * Parses the "BitField DSL" formatted strings into the respective configuration object and field type list.
+ * <p>
+ * For the specifics and format of this DSL, see the description at {@link BitFieldExternalCodeRenderer}
  */
 public class BitFieldParser {
 
@@ -70,8 +61,7 @@ public class BitFieldParser {
         ObjectMapFieldLoader fieldLoader = new ObjectMapFieldLoader();
         fieldLoader.loadFields(
                 new ObjectMapConfigSource(configObject.toMap()),
-                null,
-                config
+                config, null
         );
     }
 

@@ -1,5 +1,10 @@
 package in.spcct.spacedoc.cdi;
 
+/**
+ * Determines whether an injection variant can apply in this context.
+ * <p>
+ * The context is provided by the implementing class.
+ */
 @FunctionalInterface
 public interface Variant {
     boolean isApplicable();

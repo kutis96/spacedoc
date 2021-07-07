@@ -10,6 +10,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>spacedoc-common</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>in.spcct</groupId>
+            <artifactId>spacedoc-config</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>

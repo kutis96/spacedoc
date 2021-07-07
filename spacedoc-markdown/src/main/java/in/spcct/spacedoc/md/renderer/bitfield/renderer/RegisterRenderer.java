@@ -6,6 +6,11 @@ import in.spcct.spacedoc.md.renderer.bitfield.renderer.xml.LiteXmlBuilder;
 
 import static in.spcct.spacedoc.md.renderer.bitfield.renderer.xml.SvgUtils.*;
 
+/**
+ * Renderer for the {@link Register} field type.
+ * <p>
+ * Fairly complex, isn't it.
+ */
 public class RegisterRenderer implements FieldTypeRenderer<Register> {
 
     @Override
@@ -58,6 +63,16 @@ public class RegisterRenderer implements FieldTypeRenderer<Register> {
         return laneContainer;
     }
 
+    /**
+     * Draw the label in the middle of the bit field.
+     *
+     * @param config
+     * @param laneContainer
+     * @param horizontalOffset
+     * @param wholeFieldHeight
+     * @param bitArray
+     * @param arrayWidth
+     */
     private void drawLabel(BitFieldRenderer.Config config, LiteXmlBuilder laneContainer, int horizontalOffset, int wholeFieldHeight, Register.BitArray bitArray, int arrayWidth) {
         laneContainer.add(
                 text(bitArray.getText(),
@@ -67,6 +82,15 @@ public class RegisterRenderer implements FieldTypeRenderer<Register> {
         );
     }
 
+    /**
+     * Draw all the labels on the left side of the image.
+     *
+     * @param config
+     * @param register
+     * @param laneContainer
+     * @param horizontalOffset
+     * @param wholeFieldHeight
+     */
     private void drawLeftLabels(
             BitFieldRenderer.Config config,
             Register register,
@@ -111,6 +135,15 @@ public class RegisterRenderer implements FieldTypeRenderer<Register> {
         }
     }
 
+    /**
+     * Draw all the labels on the right side of the image.
+     *
+     * @param config
+     * @param register
+     * @param laneContainer
+     * @param horizontalOffset
+     * @param wholeFieldHeight
+     */
     private void drawRightLabels(
             BitFieldRenderer.Config config,
             Register register,
@@ -154,6 +187,16 @@ public class RegisterRenderer implements FieldTypeRenderer<Register> {
         }
     }
 
+    /**
+     * Draws the fill box filling this bit field.
+     *
+     * @param config
+     * @param bitArray
+     * @param boxGroup
+     * @param width
+     * @param laneHeight
+     * @param broken     whether this field should be rendered with a break through the middle
+     */
     private void drawFill(BitFieldRenderer.Config config, Register.BitArray bitArray, LiteXmlBuilder boxGroup, int width, int laneHeight, boolean broken) {
         if (!bitArray.isEnclosed())
             return;
@@ -202,6 +245,14 @@ public class RegisterRenderer implements FieldTypeRenderer<Register> {
 
     }
 
+    /**
+     * Draws the "tick" marks separating individual bits.
+     *
+     * @param config
+     * @param bitArray
+     * @param g
+     * @param laneHeight
+     */
     private void drawTicks(BitFieldRenderer.Config config, Register.BitArray bitArray, LiteXmlBuilder g, int laneHeight) {
         int bitWidth = config.getBitWidth();
         int tickHeight = config.getTickHeight();

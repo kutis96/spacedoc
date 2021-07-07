@@ -7,6 +7,9 @@ import in.spcct.spacedoc.module.Module;
 
 public class Setup {
 
+    /**
+     * Registers everything that needs to be registered pre-startup.
+     */
     public static void registerAll() {
         SillyCDI.registerCaching(Module.class, 0, MarkdownModule::new);
         SillyCDI.registerCaching(Module.class, 0, LanguageRendererModule::new);

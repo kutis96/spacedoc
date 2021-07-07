@@ -10,6 +10,9 @@ import in.spcct.spacedoc.ffc.js.WavedromJS;
 public class Setup {
     static final VariantDecider variantDecider = new VariantDecider();
 
+    /**
+     * Registers all known renderer implementations, along with their variant decision logic.
+     */
     public static void registerAll() {
         SillyCDI.registerCaching(Wavedrom.class, 100, variantDecider::canRunJS, WavedromJS::new);
         SillyCDI.registerCaching(Wavedrom.class, 0, WavedromCLI::new);

@@ -3,6 +3,17 @@ package in.spcct.spacedoc.configloader.objectmapconfig;
 import in.spcct.spacedoc.configloader.fieldmap.FieldMapper;
 
 public class ObjectFieldMapper extends FieldMapper<Object> {
+
+    /**
+     * Attempts to map Objects to the correct field type.
+     * <p>
+     * Currently only supports String, Integer, and Boolean values.
+     *
+     * @param propertyName only used for printing more helpful exceptions
+     * @param value        value to be converted into the specified type
+     * @param fieldType    type to convert the value to
+     * @return converted object.
+     */
     @Override
     protected Object convertItem(String propertyName, Object value, Class<?> fieldType) {
 

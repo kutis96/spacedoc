@@ -7,6 +7,9 @@ import org.commonmark.renderer.NodeRenderer;
 import java.util.Collections;
 import java.util.Set;
 
+/**
+ * A CommonMark {@link NodeRenderer}, rendering {@link FencedCodeBlock} nodes.
+ */
 public abstract class FencedCodeBlockRenderer implements NodeRenderer {
 
     @Override

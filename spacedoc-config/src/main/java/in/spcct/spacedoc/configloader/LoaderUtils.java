@@ -41,12 +41,12 @@ public class LoaderUtils {
         List<FieldMapping> fieldMappings = new ArrayList<>();
 
         for (Property p : properties) {
-            String name = prefix
+            String propertyPath = prefix
                     + ((("".equals(p.value())))
                     ? deriveConfigNameFromFieldName(field.getName())
                     : p.value());
             fieldMappings.add(
-                    new FieldMapping(field, name, p.required())
+                    new FieldMapping(field, propertyPath, p.required())
             );
         }
 

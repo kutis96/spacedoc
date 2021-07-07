@@ -1,12 +1,18 @@
-package in.spcct.spacedoc.md.renderer.bitfield;
+package in.spcct.spacedoc.md.renderer.bitfield.demo;
 
 import in.spcct.spacedoc.md.Setup;
+import in.spcct.spacedoc.md.renderer.bitfield.BitFieldRenderer;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.Register;
 import lombok.SneakyThrows;
 
 import java.io.FileWriter;
 import java.util.Arrays;
 
+/**
+ * Simple demo of the {@link BitFieldRenderer}.
+ * <p>
+ * Will likely be removed in one of the future revisions.
+ */
 public class TestBitFieldStuff {
 
 
@@ -52,14 +58,14 @@ public class TestBitFieldStuff {
                         .centerRightLabel("Center right")
                         .bottomRightLabel("Bottom right")
                         .bitArrays(Arrays.asList(
-                            new Register.BitArray("Text", 0, 16)
+                                new Register.BitArray("Text", 0, 16)
                         ))
                         .numberOfRows(5)
                         .breakInTheMiddle(false)
                         .build()
         );
 
-        try (FileWriter fileWriter = new FileWriter("H:\\Repos\\spacedoc\\src\\test\\resources\\magic.svg")) {
+        try (FileWriter fileWriter = new FileWriter(args[0])) {
             fileWriter.write(svg);
         }
     }

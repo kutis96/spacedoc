@@ -1,7 +1,9 @@
 package in.spcct.spacedoc.exec.module;
 
+import in.spcct.spacedoc.common.exception.ParserException;
+import in.spcct.spacedoc.common.exception.RenderingException;
+import in.spcct.spacedoc.common.util.StringUtils;
 import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererCore;
-import in.spcct.spacedoc.md.renderer.RenderingException;
 import in.spcct.spacedoc.module.Module;
 import org.apache.commons.cli.*;
 
@@ -11,6 +13,10 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A module for directly invoking {@link ExternalCodeRendererCore} to render custom DSL files into SVG,
+ * without the need of using markdown via {@link MarkdownModule} as an intermediary format.
+ */
 public class LanguageRendererModule implements Module {
 
     private final ExternalCodeRendererCore rendererCore = new ExternalCodeRendererCore();
@@ -93,13 +99,22 @@ public class LanguageRendererModule implements Module {
 
     }
 
-    private void render(String language, File inputFile, File outputFile) throws IOException, RenderingException {
+    private void render(String language, File inputFile, File outputFile) throws IOException {
+
+        if (!rendererCore.canRender(language))
+            System.err.println("No renderer found for '" + language + "'");
 
         String inputCode = Files.readString(inputFile.toPath());
 
-        String result = rendererCore.render(language, inputCode);
+        String result;
+        try {
+            result = rendererCore.render(language, inputCode);
+        } catch (RenderingException | ParserException e) {
+            result = StringUtils.toStackTraceString(e);
+        }
 
-        Files.writeString(outputFile.toPath(), result);
+        if (result != null)
+            Files.writeString(outputFile.toPath(), result);
 
     }
 

@@ -4,6 +4,9 @@ import in.spcct.spacedoc.md.renderer.bitfield.BitFieldRenderer;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.Separator;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.xml.LiteXmlBuilder;
 
+/**
+ * Renders a simple separator.
+ */
 public class SeparatorRenderer implements FieldTypeRenderer<Separator> {
 
     @Override

@@ -2,6 +2,11 @@ package in.spcct.spacedoc.ffc.js;
 
 import in.spcct.spacedoc.ffc.Graphviz;
 
+/**
+ * Implements {@link Graphviz} by using the VizJS javascript library.
+ * <p>
+ * (https://github.com/mdaines/viz.js)
+ */
 public class VizJS extends JavascriptRunner implements Graphviz {
 
     @Override

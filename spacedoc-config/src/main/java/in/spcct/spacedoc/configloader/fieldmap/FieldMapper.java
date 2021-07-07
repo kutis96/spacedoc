@@ -18,13 +18,13 @@ public abstract class FieldMapper<V> {
             Field field = mapping.getField();
             String propertyName = mapping.getPath();
 
-            V value = configSource.getValue(propertyName);
+            V value = configSource.getItem(propertyName);
 
             if (value == null) {
                 if (mapping.isRequired()) {
                     throw new IllegalStateException("Failed to map property: Field '" + propertyName + "' was required and not found.");
                 } else {
-                    if (configSource.containsKey(propertyName)) {
+                    if (configSource.containsItem(propertyName)) {
                         //Property value must be set to null, continue as intended.
                     } else {
                         //No property has been found in config, don't modify whatever default values there may be.
@@ -46,6 +46,14 @@ public abstract class FieldMapper<V> {
         });
     }
 
+    /**
+     * Converts the supplied value into an object of the specified fieldType.
+     *
+     * @param propertyName only used for printing more helpful exceptions
+     * @param value        value to be converted into the specified type
+     * @param fieldType    type to convert the value to
+     * @return object of the specified fieldType or null
+     */
     protected abstract Object convertItem(String propertyName, V value, Class<?> fieldType);
 
 }

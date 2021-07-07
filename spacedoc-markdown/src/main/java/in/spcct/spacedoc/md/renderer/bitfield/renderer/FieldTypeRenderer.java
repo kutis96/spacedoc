@@ -10,6 +10,9 @@ import in.spcct.spacedoc.md.renderer.bitfield.renderer.xml.LiteXmlBuilder;
  */
 public interface FieldTypeRenderer<T extends FieldType> {
 
+    /**
+     * @return {@link FieldType} this renderer can render.
+     */
     Class<T> getRenderedClass();
 
     /**

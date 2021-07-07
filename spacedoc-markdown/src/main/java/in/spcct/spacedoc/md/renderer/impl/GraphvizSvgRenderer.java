@@ -1,12 +1,18 @@
 package in.spcct.spacedoc.md.renderer.impl;
 
 import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.common.exception.RenderingException;
 import in.spcct.spacedoc.ffc.Graphviz;
 import in.spcct.spacedoc.md.renderer.ExternalCodeRenderer;
-import in.spcct.spacedoc.md.renderer.RenderingException;
 
 import java.io.IOException;
 
+/**
+ * External code renderer for the "graphviz" format.
+ *
+ * @see "https://en.wikipedia.org/wiki/Graphviz"
+ * @see "https://graphviz.org/"
+ */
 public class GraphvizSvgRenderer implements ExternalCodeRenderer {
 
     @Override

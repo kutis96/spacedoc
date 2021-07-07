@@ -6,7 +6,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Must annotate all {@link AbstractPropertyConfig} fields to be loaded
+ * Must annotate allfields to be loaded by the {@link in.spcct.spacedoc.configloader.propconfig.PropertyConfigFieldLoader},
+ * or mapped by a {@link in.spcct.spacedoc.configloader.fieldmap.FieldMapper}.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
