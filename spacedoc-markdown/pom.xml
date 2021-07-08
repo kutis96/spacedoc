@@ -65,11 +65,6 @@
             <artifactId>json</artifactId>
             <version>20210307</version>
         </dependency>
-        <dependency>
-            <groupId>org.jfree</groupId>
-            <artifactId>jfreesvg</artifactId>
-            <version>3.4.1</version>
-        </dependency>
     </dependencies>
 
 </project>

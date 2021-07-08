@@ -27,6 +27,11 @@
             <artifactId>spacedoc-htmldoc</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>in.spcct</groupId>
+            <artifactId>spacedoc-cdi</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/commons-cli/commons-cli -->
         <dependency>
@@ -38,33 +43,59 @@
 
     <build>
         <plugins>
+            <!-- TODO: Make this work -->
+            <!--            <plugin>-->
+            <!--                <groupId>org.graalvm.nativeimage</groupId>-->
+            <!--                <artifactId>native-image-maven-plugin</artifactId>-->
+            <!--                <version>${graalvm.version}</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <goals>-->
+            <!--                            <goal>native-image</goal>-->
+            <!--                        </goals>-->
+            <!--                        <phase>package</phase>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <configuration>-->
+            <!--                    <skip>false</skip>-->
+            <!--                    <imageName>spacedoc</imageName>-->
+            <!--                    <mainClass>in.spcct.spacedoc.exec.Main</mainClass>-->
+            <!--                    <buildArgs>-->
+            <!--                        &#45;&#45;no-fallback-->
+            <!--                    </buildArgs>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <plugin>
-                <groupId>org.graalvm.nativeimage</groupId>
-                <artifactId>native-image-maven-plugin</artifactId>
-                <version>${graalvm.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>native-image</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
-                    <skip>false</skip>
-                    <imageName>spacedoc</imageName>
-                    <mainClass>in.spcct.spacedoc.exec.Main</mainClass>
-                    <buildArgs>
-                        --no-fallback
-                    </buildArgs>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>in.spcct.spacedoc.exec.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                 </configuration>
             </plugin>
         </plugins>
