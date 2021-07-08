@@ -11,11 +11,6 @@
 
     <artifactId>spacedoc-executable</artifactId>
 
-    <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>in.spcct</groupId>
@@ -65,15 +60,17 @@
             <!--                    </buildArgs>-->
             <!--                </configuration>-->
             <!--            </plugin>-->
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven.compiler.version}</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
@@ -87,6 +84,8 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <finalName>spacedoc-${project.version}</finalName>
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>

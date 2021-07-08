@@ -27,6 +27,7 @@
         <graalvm.version>21.1.0</graalvm.version>
         <commonmark.version>0.17.2</commonmark.version>
         <lombok.version>1.18.20</lombok.version>
+        <maven.compiler.version>3.8.1</maven.compiler.version>
     </properties>
 
     <dependencies>
@@ -37,4 +38,5 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
 </project>
