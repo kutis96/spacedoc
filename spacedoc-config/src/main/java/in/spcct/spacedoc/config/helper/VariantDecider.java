@@ -1,7 +1,7 @@
 package in.spcct.spacedoc.config.helper;
 
-import in.spcct.spacedoc.config.EnableDisableAuto;
 import in.spcct.spacedoc.config.FFCConfig;
+import in.spcct.spacedoc.config.commons.EnableDisableAuto;
 import org.graalvm.home.Version;
 
 public class VariantDecider {

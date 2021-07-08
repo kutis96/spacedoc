@@ -1,4 +1,4 @@
-package in.spcct.spacedoc.config;
+package in.spcct.spacedoc.config.commons;
 
 public enum EnableDisableAuto {
     ENABLED,

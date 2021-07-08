@@ -1,6 +1,7 @@
 package in.spcct.spacedoc.config;
 
 
+import in.spcct.spacedoc.config.commons.EnableDisableAuto;
 import in.spcct.spacedoc.configloader.ConfigFile;
 import in.spcct.spacedoc.configloader.Converter;
 import in.spcct.spacedoc.configloader.Property;
