@@ -2,6 +2,10 @@
 
 Spacecat's Awesome Documentation Renderer.
 
+## Does it still build?
+
+[![Maven CI Build](https://github.com/kutis96/spacedoc/actions/workflows/maven-ci.yml/badge.svg)](https://github.com/kutis96/spacedoc/actions/workflows/maven-ci.yml)
+
 ## What it is
 
 A "simple" documentation renderer intended for use with digital electronics projects. Think FPGAs, state-machines,
