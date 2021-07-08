@@ -29,6 +29,26 @@ And either:
         - External JS libraries can only be used with the configuration value `ffc.polyglot-js` set to `DISABLED`
             - **TODO:** Auto-detection of non-GraalVM runtimes is currently broken, do not use `AUTO` here (yet).
     - **TODO:** Investigate other JS runtimes for non-GraalVM targets
+    - In this case, you will also need Node.js
+        - Do also set the `ffc.npx-executable` value in config.
+        - You will also want to _install_ the required NPX modules.
+            - To do this, you will need to `npm --install wavedrom-cli` the following
+            - Backstory, according to my understanding.
+                - `npx` is used to run pre-packaged Node.JS CLI apps/binaries
+                - For whatever reason, `npx` can download the packages it needs, but by default, it won't install them.
+                  And it does this _every time_ it needs to run something. Leading to massive time penalties in case one
+                  has to run this multiple times, and in case of SpaceDoc, for every code block to be rendered by, say,
+                  WaveDrom.
+            - Backstory, part II:
+                - Why the hell would I want to run `wavedrom-cli` in the first place?
+                    - Wavedrom supports running in the browser
+                    - They even have a nice online API for generating SVGs for you
+                    - But, I still wanted to have a nice, static HTML spat out, with neat SVGs rendered in without any
+                      JS dependencies.
+                        - That nice Wavedrom online SVG-generating API won't be online forever
+                        - Packaging JS dependencies with the generated HTML site could work, however.
+                - **TODO:** Add an option to "null" DSL support for certain languages, passing them through as "regular"
+                  code blocks
 
 ### Build
 
@@ -52,8 +72,14 @@ at `config/resources`.
 
 Currently, these values are supported:
 
+**WARNING:** The names of config values _will_ likely change before the next release.
+
 **TODO:** Autogenerate documentation of config values to keep things relevant
+
 **TODO:** Add some way of aliasing config values
+
+**TODO:** Standardize config value naming
+
 **TODO:** Stop writing todos and use GitHub Issues instead
 
 - `ffc.npx-executable`
@@ -69,6 +95,18 @@ Currently, these values are supported:
               will be used instead.
         - `AUTO`
             - Automatically detects whether the Polyglot API can be used.
+- `general.temp-file-prefix`
+    - All `spacedoc` temporary file names will start with this prefix
+    - May not be set, in which case `spacedoc-temp` will be used by default.
+- `general.temp-directory-path`
+    - Temporary file directory for temporary generated output files
+        - Typically used by external library calls, such as `wavedrom-cli`.
+    - May not be set, in which case the default system temp path is used.
+- `polyglot.js.require.directory`
+    - Path to a directory to store NodeJS module dependencies
+    - May not be set, in which case `js/require` on the current classpath (think the same directory the `spacedoc.jar`
+      is in) is used.
+        - **TODO:** Verify
 
 ## How do I run it
 
