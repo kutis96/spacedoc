@@ -70,7 +70,7 @@ the [usage](#How do I run it) section of this readme.
 
 **TODO:** Actually describe how to configure this.
 
-Currently, the only way to configure this is by the use of a [.properties]() file located
+Currently, the only way to configure this is by the use of a [.properties](https://docs.oracle.com/javase/7/docs/api/java/util/Properties.html) file located
 at `[project-root]/spacedoc-config/src/main/resources/config`, which also gets built into the final `.jar`
 at `config/resources`.
 
