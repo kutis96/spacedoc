@@ -21,8 +21,9 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Set up Node.JS  #used as a dependency for non-GraalVM targets
-      uses: actions/setup-node@v1
-      #todo: node-version
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
     - name: Install NodeJS dependencies
       run: npm install -g npx wavedrom-cli
     - name: Build with Maven
