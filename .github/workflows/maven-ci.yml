@@ -25,6 +25,6 @@ jobs:
       with:
         node-version: '14'
     - name: Install NodeJS dependencies
-      run: npm install -g npx wavedrom-cli
+      run: npm install -g wavedrom-cli
     - name: Build with Maven
       run: mvn -B package --file pom.xml
