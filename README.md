@@ -4,7 +4,7 @@ Spacecat's Awesome Documentation Renderer.
 
 ## Does it still build?
 
-[![Maven CI Build](https://github.com/kutis96/spacedoc/actions/workflows/maven-ci.yml/badge.svg)](https://github.com/kutis96/spacedoc/actions/workflows/maven-ci.yml)
+[![Maven CI Build](https://github.com/CodeComesfromSpace/spacedoc/actions/workflows/maven-ci.yml/badge.svg?branch=main)](https://github.com/CodeComesfromSpace/spacedoc/actions/workflows/maven-ci.yml)
 
 ## What it is
 
