@@ -5,8 +5,8 @@ import in.spcct.spacedoc.config.ConfigNamespace;
 import in.spcct.spacedoc.config.ConfigProperty;
 import in.spcct.spacedoc.config.Converter;
 import in.spcct.spacedoc.config.commons.EnableDisableAuto;
+import in.spcct.spacedoc.config.loader.Config;
 import in.spcct.spacedoc.config.loader.fieldmap.converter.EnumConverter;
-import in.spcct.spacedoc.config.loader.newconf.Config;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

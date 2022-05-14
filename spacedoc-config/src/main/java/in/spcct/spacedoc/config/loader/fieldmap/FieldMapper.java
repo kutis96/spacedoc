@@ -7,18 +7,20 @@ import org.apache.commons.beanutils.BeanUtils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * @param <V> base type for value conversions
- */
-public abstract class FieldMapper<V> {
+public abstract class FieldMapper {
 
-    public void mapAll(List<FieldMapping> mappings, ConfigSource<V> configSource, Object targetObject) {
+    public void mapAll(List<FieldMapping> mappings, ConfigSource configSource, Object targetObject) {
         mappings.forEach(mapping -> {
             Field field = mapping.getField();
             String propertyName = mapping.getPath();
 
-            V value = configSource.getItem(propertyName);
+            //TODO: Unspaghettify
+
+            Object value = configSource.containsItem(propertyName)
+                    ? configSource.getItem(propertyName)
+                    : null;
 
             if (value == null) {
                 if (mapping.isRequired()) {
@@ -27,8 +29,12 @@ public abstract class FieldMapper<V> {
                     if (configSource.containsItem(propertyName)) {
                         //Property value must be set to null, continue as intended.
                     } else {
-                        //No property has been found in config, don't modify whatever default values there may be.
-                        return; //this iteration, not this method
+                        if (!Objects.equals(mapping.getDefaultValue(), "")) {
+                            value = mapping.getDefaultValue();
+                        } else {
+                            //No property has been found in config, don't modify whatever default values there may be.
+                            return; //this iteration, not this method
+                        }
                     }
                 }
             }
@@ -66,6 +72,6 @@ public abstract class FieldMapper<V> {
      * @param fieldType    type to convert the value to
      * @return object of the specified fieldType or null
      */
-    protected abstract Object convertItem(String propertyName, V value, Class<?> fieldType);
+    protected abstract Object convertItem(String propertyName, Object value, Class<?> fieldType);
 
 }

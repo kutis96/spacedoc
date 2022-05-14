@@ -1,6 +1,5 @@
 package in.spcct.spacedoc.config.loader;
 
-import in.spcct.spacedoc.config.ConfigNamespace;
 import in.spcct.spacedoc.config.ConfigProperty;
 import in.spcct.spacedoc.config.loader.fieldmap.FieldMapping;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -13,24 +12,8 @@ import java.util.stream.Collectors;
 //TODO: Clean up
 public class LoaderUtils {
 
-    public static List<FieldMapping> deriveFieldMappings(Class<?> clazz) {
-        return deriveFieldMappings(
-                getNamespacePrefix(clazz),
-                clazz,
-                "."
-        );
-    }
-
-    private static String getNamespacePrefix(Class<?> clazz) {
-        ConfigNamespace configNamespace = clazz.getAnnotation(ConfigNamespace.class);
-
-        return (configNamespace != null)
-                ? configNamespace.prefix()
-                : null;
-    }
-
-    public static List<FieldMapping> deriveFieldMappings(String basePrefix, Class<?> clazz, String pathSeparator) {
-        final String actualPrefix = actualPrefix(basePrefix, pathSeparator);
+    public static List<FieldMapping> deriveFieldMappings(String basePrefix, Class<?> clazz) {
+        final String actualPrefix = actualPrefix(basePrefix, ".");
 
         return FieldUtils.getAllFieldsList(clazz)
                 .stream()
@@ -64,7 +47,7 @@ public class LoaderUtils {
                     ? deriveConfigNameFromFieldName(field.getName())
                     : p.value());
             fieldMappings.add(
-                    new FieldMapping(field, propertyPath, p.required())
+                    new FieldMapping(field, propertyPath, p.required(), p.defaultValue())
             );
         }
 

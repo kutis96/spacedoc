@@ -2,7 +2,7 @@ package in.spcct.spacedoc.config.internal;
 
 import in.spcct.spacedoc.config.ConfigNamespace;
 import in.spcct.spacedoc.config.ConfigProperty;
-import in.spcct.spacedoc.config.loader.newconf.Config;
+import in.spcct.spacedoc.config.loader.Config;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

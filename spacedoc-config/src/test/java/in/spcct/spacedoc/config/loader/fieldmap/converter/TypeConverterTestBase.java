@@ -37,7 +37,7 @@ public abstract class TypeConverterTestBase {
 
         assertFalse(field.isEmpty(), "No field could be mapped for name " + name);
 
-        return new FieldMapping(field.get(), name, false);
+        return new FieldMapping(field.get(), name, false, "");
     }
 
 

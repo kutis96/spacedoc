@@ -2,8 +2,8 @@ package in.spcct.spacedoc.md.renderer.bitfield;
 
 import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.exception.ParserException;
-import in.spcct.spacedoc.config.loader.objectmapconfig.ObjectMapConfigSource;
-import in.spcct.spacedoc.config.loader.objectmapconfig.ObjectMapFieldLoader;
+import in.spcct.spacedoc.config.loader.impls.objectmapconfig.ObjectMapConfigSource;
+import in.spcct.spacedoc.config.loader.impls.objectmapconfig.ObjectMapFieldLoader;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import in.spcct.spacedoc.md.renderer.bitfield.parser.FieldTypeParser;
 import org.json.JSONArray;

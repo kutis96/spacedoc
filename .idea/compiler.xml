@@ -10,11 +10,13 @@
         <module name="spacedoc-cdi" />
         <module name="spacedoc-common" />
         <module name="spacedoc-executable" />
-        <module name="spacedoc-htmldoc" />
         <module name="spacedoc-markdown" />
         <module name="spacedoc-ffc" />
         <module name="spacedoc-config" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="spacedoc-htmldoc" target="11" />
+    </bytecodeTargetLevel>
   </component>
 </project>

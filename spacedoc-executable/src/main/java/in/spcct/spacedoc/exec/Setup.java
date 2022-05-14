@@ -17,5 +17,7 @@ public class Setup {
         in.spcct.spacedoc.config.Setup.registerAll();
         in.spcct.spacedoc.md.Setup.registerAll();
         in.spcct.spacedoc.ffc.Setup.registerAll();
+
+
     }
 }

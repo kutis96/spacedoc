@@ -92,7 +92,7 @@ public class Registry {
     @SuppressWarnings("unchecked")
     public static <T> T lookup(Class<T> clazz) throws LookupException {
         if (store.get(clazz) == null)
-            throw new LookupException("Null class provided");
+            throw new LookupException("Nothing was registered for " + clazz.getCanonicalName());
 
         T result = (T) store.get(clazz)
                 .stream()

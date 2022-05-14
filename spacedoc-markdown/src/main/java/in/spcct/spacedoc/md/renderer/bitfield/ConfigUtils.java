@@ -1,34 +1,37 @@
 package in.spcct.spacedoc.md.renderer.bitfield;
 
+import in.spcct.spacedoc.config.ConfigContext;
 import in.spcct.spacedoc.config.ConfigProperty;
-import in.spcct.spacedoc.config.loader.propconfig.PropertyConfigFieldLoader;
+import in.spcct.spacedoc.config.helper.YesIKnow;
+import in.spcct.spacedoc.config.loader.FieldLoader;
+import in.spcct.spacedoc.config.loader.impls.confwrap.ConfigContextConfigSource;
+import in.spcct.spacedoc.config.loader.impls.confwrap.ConfigWrapperFieldLoader;
 
 import java.util.Map;
-import java.util.Properties;
 
 public class ConfigUtils {
 
-    private static final PropertyConfigFieldLoader configFieldLoader = new PropertyConfigFieldLoader();
+    private static final FieldLoader fieldLoader = new ConfigWrapperFieldLoader();
 
     /**
      * Creates a new {@link in.spcct.spacedoc.md.renderer.bitfield.BitFieldRenderer.Config} from the provided Map of config entries.
      * <p>
      * The {@link in.spcct.spacedoc.md.renderer.bitfield.BitFieldRenderer.Config} fields are annotated with {@link ConfigProperty},
-     * enabling the use of a a {@link PropertyConfigFieldLoader} for populating the class's values.
+     * enabling the use of a {@link FieldLoader} for populating the class's values.
      *
      * @param configEntries map of config entries
      * @return new instance of the configuration file
      */
     public static BitFieldRenderer.Config createRendererConfig(Map<String, String> configEntries) {
-        Properties properties = new Properties();
-        properties.putAll(configEntries);
+        ConfigContext configContext = ConfigContext.getInstance();
 
         BitFieldRenderer.Config config = new BitFieldRenderer.Config();
 
-        configFieldLoader.loadFields(
-                properties,
+        fieldLoader.loadFields(
+                new ConfigContextConfigSource(configContext),
+                config,
                 null,
-                config
+                YesIKnow.thatStringsAreActuallyObjects(configEntries)
         );
 
         return config;

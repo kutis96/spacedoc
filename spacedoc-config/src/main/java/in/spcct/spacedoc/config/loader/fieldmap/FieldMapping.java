@@ -13,9 +13,12 @@ public class FieldMapping {
     private final String path;
     private final boolean required;
 
-    public FieldMapping(Field field, String propertyPath, boolean required) {
+    private final String defaultValue;
+
+    public FieldMapping(Field field, String propertyPath, boolean required, String defaultValue) {
         this.field = field;
         this.path = propertyPath;
         this.required = required;
+        this.defaultValue = defaultValue;
     }
 }

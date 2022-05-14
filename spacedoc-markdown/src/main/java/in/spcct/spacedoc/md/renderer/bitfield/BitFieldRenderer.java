@@ -135,58 +135,58 @@ public class BitFieldRenderer {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Config {
 
-        @ConfigProperty(value = "font-size", required = false)
-        private int fontSize = 14;
+        @ConfigProperty(value = "font-size", defaultValue = "14")
+        private int fontSize;
 
-        @ConfigProperty(value = "bit-width", required = false)
-        private int bitWidth = 20;
+        @ConfigProperty(value = "bit-width", defaultValue = "20")
+        private int bitWidth;
 
-        @ConfigProperty(value = "bit-separator-height", required = false)
-        private int tickHeight = 3;
+        @ConfigProperty(value = "bit-separator-height", defaultValue = "3")
+        private int tickHeight;
 
-        @ConfigProperty(value = "lane-height", required = false)
-        private int laneHeight = 26;
+        @ConfigProperty(value = "lane-height", defaultValue = "26")
+        private int laneHeight;
 
-        @ConfigProperty(value = "separator-height", required = false)
-        private int separatorHeight = 7;
+        @ConfigProperty(value = "separator-height", defaultValue = "7")
+        private int separatorHeight;
 
-        @ConfigProperty(value = "label-offset-left", required = false)
-        private int leftLabelHorizontalOffset = -77;
+        @ConfigProperty(value = "label-offset-left", defaultValue = "-77")
+        private int leftLabelHorizontalOffset;
 
-        @ConfigProperty(value = "label-offset-right", required = false)
-        private int rightLabelHorizontalOffset = 5;
+        @ConfigProperty(value = "label-offset-right", defaultValue = "5")
+        private int rightLabelHorizontalOffset;
 
-        @ConfigProperty(value = "label-offset-vertical", required = false)
-        private int labelVerticalOffset = -3;
+        @ConfigProperty(value = "label-offset-vertical", defaultValue = "-3")
+        private int labelVerticalOffset;
 
-        @ConfigProperty(value = "label-bitnumber-offset", required = false)
-        private int bitNumberOffset = -2;
+        @ConfigProperty(value = "label-bitnumber-offset", defaultValue = "-2")
+        private int bitNumberOffset;
 
-        @ConfigProperty(value = "image-offset-vertical", required = false)
-        private int verticalOffset = 14;
+        @ConfigProperty(value = "image-offset-vertical", defaultValue = "14")
+        private int verticalOffset;
 
-        @ConfigProperty(value = "image-width", required = false)
-        private int imageWidth = -1;
+        @ConfigProperty(value = "image-width", defaultValue = "-1")
+        private int imageWidth;
 
-        @ConfigProperty(value = "image-height", required = false)
-        private int imageHeight = -1;
+        @ConfigProperty(value = "image-height", defaultValue = "-1")
+        private int imageHeight;
 
-        @ConfigProperty(value = "image-padding-bottom", required = false)
-        private int imagePaddingBottom = 3;
+        @ConfigProperty(value = "image-padding-bottom", defaultValue = "3")
+        private int imagePaddingBottom;
 
-        @ConfigProperty(value = "image-font-family", required = false)
-        private String fontFamily = "sans-serif";
+        @ConfigProperty(value = "image-font-family", defaultValue = "sans-serif")
+        private String fontFamily;
 
 
-        @ConfigProperty(value = "field-horizontal-offset", required = false)
-        private int bitFieldHorizontalOffset = 80;
+        @ConfigProperty(value = "field-horizontal-offset", defaultValue = "80")
+        private int bitFieldHorizontalOffset;
 
-        @ConfigProperty(value = "field-break-gap", required = false)
-        private int fieldBreakGap = 10;
-        @ConfigProperty(value = "field-break-bezier-x", required = false)
-        private int fieldBreakBezierX = 30;
-        @ConfigProperty(value = "field-break-bezier-y", required = false)
-        private int fieldBreakBezierY = 30;
+        @ConfigProperty(value = "field-break-gap", defaultValue = "10")
+        private int fieldBreakGap;
+        @ConfigProperty(value = "field-break-bezier-x", defaultValue = "30")
+        private int fieldBreakBezierX;
+        @ConfigProperty(value = "field-break-bezier-y", defaultValue = "30")
+        private int fieldBreakBezierY;
 
         private String mainElementClass;
 

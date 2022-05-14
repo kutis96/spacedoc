@@ -28,7 +28,7 @@ public @interface ConfigProperty {
      *
      * @return
      */
-    boolean required() default true;
+    boolean required() default false;
 
 
 }

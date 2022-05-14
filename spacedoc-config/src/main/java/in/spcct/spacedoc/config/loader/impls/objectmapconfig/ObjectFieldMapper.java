@@ -1,8 +1,11 @@
-package in.spcct.spacedoc.config.loader.objectmapconfig;
+package in.spcct.spacedoc.config.loader.impls.objectmapconfig;
 
 import in.spcct.spacedoc.config.loader.fieldmap.FieldMapper;
+import in.spcct.spacedoc.config.loader.fieldmap.StringFieldMapper;
 
-public class ObjectFieldMapper extends FieldMapper<Object> {
+public class ObjectFieldMapper extends FieldMapper {
+
+    private static final StringFieldMapper stringFieldMapper = new StringFieldMapper();
 
     /**
      * Attempts to map Objects to the correct field type.
@@ -15,12 +18,12 @@ public class ObjectFieldMapper extends FieldMapper<Object> {
      * @return converted object.
      */
     @Override
-    protected Object convertItem(String propertyName, Object value, Class<?> fieldType) {
+    public Object convertItem(String propertyName, Object value, Class<?> fieldType) {
 
         if (value == null) {
             return null;
         } else if (fieldType == String.class) {
-            return String.valueOf(value);
+            return stringFieldMapper.convertItem(propertyName, value, fieldType);
         } else if (fieldType == Integer.class || fieldType == int.class) {
             if (value instanceof Integer) {
                 return value;

@@ -1,4 +1,4 @@
-package in.spcct.spacedoc.config.loader.newconf;
+package in.spcct.spacedoc.config.loader;
 
 /**
  * Annotates config classes to be loaded and managed.

@@ -1,4 +1,4 @@
-package in.spcct.spacedoc.config.loader.objectmapconfig;
+package in.spcct.spacedoc.config.loader.impls.objectmapconfig;
 
 import in.spcct.spacedoc.config.loader.ConfigSource;
 import lombok.NonNull;
@@ -6,7 +6,7 @@ import lombok.NonNull;
 import java.util.Collections;
 import java.util.Map;
 
-public class ObjectMapConfigSource implements ConfigSource<Object> {
+public class ObjectMapConfigSource implements ConfigSource {
 
     /**
      * Values are expected to be of any type; in case they're of a {@link Map} type, {@link Map<String, Object>} is assumed.
@@ -25,15 +25,15 @@ public class ObjectMapConfigSource implements ConfigSource<Object> {
     }
 
     @Override
-    public boolean containsItem(@NonNull String... pathSegments) {
-        return getMapByPath(pathSegments)
-                .containsKey(lastKey(pathSegments));
+    public boolean containsItem(@NonNull String path) {
+        return getMapByPath(path)
+                .containsKey(lastKey(path));
     }
 
     @Override
-    public Object getItem(@NonNull String... pathSegments) {
-        return getMapByPath(pathSegments)
-                .get(lastKey(pathSegments));
+    public Object getItem(@NonNull String path) {
+        return getMapByPath(path)
+                .get(lastKey(path));
     }
 
     private String lastKey(String... pathSegments) {
@@ -43,8 +43,8 @@ public class ObjectMapConfigSource implements ConfigSource<Object> {
         return pathSegments[pathSegments.length - 1];
     }
 
-    private Map<String, Object> getMapByPath(String... pathSegments) {
-        return getMapByPath(pathSegments, 0, map);
+    private Map<String, Object> getMapByPath(String path) {
+        return getMapByPath(path.split("\\."), 0, map);
     }
 
     private Map<String, Object> getMapByPath(String[] pathSegments, int startingIndex, Map<String, Object> originalMap) {
