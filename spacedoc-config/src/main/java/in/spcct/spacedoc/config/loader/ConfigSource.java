@@ -4,8 +4,6 @@ import lombok.NonNull;
 
 /**
  * Generic source of configuration objects.
- *
- * @param <V> Type of values provided by this configuration source.
  */
 public interface ConfigSource {
 

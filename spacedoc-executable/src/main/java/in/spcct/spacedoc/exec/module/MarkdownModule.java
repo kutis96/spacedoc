@@ -2,6 +2,7 @@ package in.spcct.spacedoc.exec.module;
 
 import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.module.Module;
+import in.spcct.spacedoc.config.ConfigContext;
 import org.apache.commons.cli.*;
 import org.commonmark.Extension;
 import org.commonmark.node.Node;
@@ -12,12 +13,16 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Module for rendering markdown formatted SpaceDoc documents.
  */
 public class MarkdownModule implements Module {
+
+    private static final ConfigContext configContext = ConfigContext.getInstance();
+
     @Override
     public String getLongName() {
         return "MarkDown";
@@ -35,10 +40,26 @@ public class MarkdownModule implements Module {
                 .addOption("o", "output", true, "Output html. When none is specified, an output file will be processed at the same path as the input file, with .html extension attached instead of the original one.")
                 .addOption("head", true, "Prefix this file to the output html. Optional.")
                 .addOption("tail", true, "Suffix this file to the output html. Optional.")
-                .addOption("h", "help", false, "Get help");
+                .addOption("h", "help", false, "Get help")
+                .addOption("O", "option", true, "Add more config options! Usage: -O key=value")
+                .addOption("OL", "option-use", false, "List option use stats at the end of the run");
 
         CommandLineParser commandLineParser = new DefaultParser();
         CommandLine commandLine = commandLineParser.parse(cliOptions, args);
+
+        if (commandLine.hasOption("O")) {
+            Arrays.stream(commandLine.getOptionValues("O"))
+                    .forEach(string -> {
+                        String[] splits = string.split("=");
+                        //TODO: bounds check
+                        String key = splits[0].trim();
+                        String val = splits[1].trim();
+                        configContext.put(
+                                ConfigContext.EntrySource.COMMAND_LINE,
+                                key, val
+                        );
+                    });
+        }
 
         if (commandLine.hasOption("h") || commandLine.getOptions().length == 0) {
             HelpFormatter helpFormatter = new HelpFormatter();
@@ -85,6 +106,21 @@ public class MarkdownModule implements Module {
         }
 
         doTheThing(inputFile, outputFile, prefixFile, suffixFile);
+
+        if (commandLine.hasOption("OL")) {
+            System.out.println("These entries were actually queried for existence or used:");
+            configContext.getQueriedEntries().forEach(
+                    e -> System.out.printf("\t%35s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
+            );
+            System.out.println("These values entries were actually used:");
+            configContext.getUsedEntries().forEach(
+                    e -> System.out.printf("\t%35s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
+            );
+            System.out.println("These entries were defined, but never used:");
+            configContext.getUnusedEntries().forEach(
+                    e -> System.out.printf("\t%35s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
+            );
+        }
 
         System.out.println(inputFile.getAbsolutePath() + " -> " + outputFile.getAbsolutePath());
     }

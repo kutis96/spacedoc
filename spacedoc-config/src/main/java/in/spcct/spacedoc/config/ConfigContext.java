@@ -72,12 +72,12 @@ public interface ConfigContext {
             this.source = source;
             this.key = key;
             this.value = value;
+            this.used = false;
         }
 
         private final EntrySource source;
         private final String key;
         private final String value;
-
         private boolean used;
     }
 

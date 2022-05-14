@@ -41,8 +41,11 @@ public class ConfigContextImpl implements ConfigContext {
 
     @Override
     public String get(String propertyName) {
-        if (contains(propertyName))
-            return backingMap.get(propertyName).getValue();
+        if (contains(propertyName)) {
+            Entry entry = backingMap.get(propertyName);
+            entry.setUsed(true);
+            return entry.getValue();
+        }
         throw new ConfigContext.NoValueAssociatedException("No value set for '" + propertyName + "'");
     }
 
@@ -57,7 +60,7 @@ public class ConfigContextImpl implements ConfigContext {
         keysTestedForExistence.stream()
                 .map(key -> new Entry(null, key, null))
                 .forEach(entry -> temp.put(entry.getKey(), entry));
-        temp.putAll(backingMap);
+        getUsedEntries().forEach(entry -> temp.put(entry.getKey(), entry));
         return temp.values();
     }
 
