@@ -7,6 +7,18 @@ import lombok.NonNull;
  */
 public interface ConfigSource {
 
+    class NullSource implements ConfigSource {
+        @Override
+        public boolean containsItem(@NonNull String path) {
+            return false;
+        }
+
+        @Override
+        public Object getItem(@NonNull String path) {
+            return null;
+        }
+    }
+
     /**
      * Determines whether this configuration source contains a value on the specified path.
      *

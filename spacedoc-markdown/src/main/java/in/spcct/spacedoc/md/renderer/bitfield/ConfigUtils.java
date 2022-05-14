@@ -1,10 +1,9 @@
 package in.spcct.spacedoc.md.renderer.bitfield;
 
-import in.spcct.spacedoc.config.ConfigContext;
 import in.spcct.spacedoc.config.ConfigProperty;
 import in.spcct.spacedoc.config.helper.YesIKnow;
+import in.spcct.spacedoc.config.loader.ConfigSource;
 import in.spcct.spacedoc.config.loader.FieldLoader;
-import in.spcct.spacedoc.config.loader.impls.confwrap.ConfigContextConfigSource;
 import in.spcct.spacedoc.config.loader.impls.confwrap.ConfigWrapperFieldLoader;
 
 import java.util.Map;
@@ -23,12 +22,11 @@ public class ConfigUtils {
      * @return new instance of the configuration file
      */
     public static BitFieldRenderer.Config createRendererConfig(Map<String, String> configEntries) {
-        ConfigContext configContext = ConfigContext.getInstance();
 
         BitFieldRenderer.Config config = new BitFieldRenderer.Config();
 
         fieldLoader.loadFields(
-                new ConfigContextConfigSource(configContext),
+                new ConfigSource.NullSource(),
                 config,
                 null,
                 YesIKnow.thatStringsAreActuallyObjects(configEntries)
