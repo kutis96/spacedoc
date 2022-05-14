@@ -19,7 +19,7 @@ public class PolyglotConfig implements Config {
     /**
      * Directory to be used for require():d NPM modules
      */
-    @ConfigProperty(required = false, value = "js.require.directory")
-    private String requireCwd = "js/require";
+    @ConfigProperty(name = "js.require.directory", defaultValue = "js/require")
+    private String requireCwd;
 
 }

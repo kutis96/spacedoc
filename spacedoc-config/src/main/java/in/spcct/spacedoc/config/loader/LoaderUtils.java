@@ -30,6 +30,7 @@ public class LoaderUtils {
      * @param prefix prefix property
      * @return prefix to be used with further processing
      */
+    //TODO: Clean this prefix stuff up
     public static String actualPrefix(String prefix, String pathSeparator) {
         return (prefix == null || "".equals(prefix))
                 ? ""
@@ -42,29 +43,15 @@ public class LoaderUtils {
         List<FieldMapping> fieldMappings = new ArrayList<>();
 
         for (ConfigProperty p : properties) {
-            String propertyPath = prefix
-                    + ((("".equals(p.value())))
-                    ? deriveConfigNameFromFieldName(field.getName())
-                    : p.value());
+            if ("".equals(p.name()))
+                throw new UnsupportedOperationException("All config field names must be non-empty:" + field);
+            String propertyPath = prefix + p.name();
             fieldMappings.add(
                     new FieldMapping(field, propertyPath, p.required(), p.defaultValue())
             );
         }
 
         return fieldMappings;
-    }
-
-    /**
-     * Converts javaCase field names to kebab-case.
-     *
-     * @param fieldName original field name
-     * @return kebab-case field names
-     */
-    public static String deriveConfigNameFromFieldName(String fieldName) {
-        return fieldName
-                .replaceAll("(\\p{javaUpperCase}+)", "-$1") //prefix groups of uppercase letters with a dash
-                .replaceAll("^-", "") //remove leading dash
-                .toLowerCase(); //convert all to lowercase
     }
 
 }

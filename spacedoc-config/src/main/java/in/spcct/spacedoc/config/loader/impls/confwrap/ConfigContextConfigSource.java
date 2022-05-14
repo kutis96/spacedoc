@@ -14,7 +14,7 @@ public class ConfigContextConfigSource implements ConfigSource {
 
     @Override
     public boolean containsItem(@NonNull String path) {
-        return backing.contains(String.join(".", path));
+        return backing.contains(path);
     }
 
     @Override

@@ -25,13 +25,13 @@ public class FFCConfig implements Config {
      * <p>
      * Typically useful for running code from external JavaScript libraries.
      */
-    @ConfigProperty
+    @ConfigProperty(name = "npx-executable", defaultValue = "npx")
     private String npxExecutable;
 
     /**
      *
      */
-    @ConfigProperty(required = false)
+    @ConfigProperty(name = "polyglot-j")
     @Converter(EnumConverter.class)
     private EnableDisableAuto polyglotJs = EnableDisableAuto.AUTO;
 }

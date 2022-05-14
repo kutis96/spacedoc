@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Must annotate all fields to be loaded by the {@link in.spcct.spacedoc.config.loader.propconfig.PropertyConfigFieldLoader},
+ * Must annotate all fields to be loaded by the {@link in.spcct.spacedoc.config.loader.FieldLoader},
  * or mapped by a {@link in.spcct.spacedoc.config.loader.fieldmap.FieldMapper}.
  */
 @Retention(RetentionPolicy.RUNTIME)
@@ -18,9 +18,8 @@ public @interface ConfigProperty {
      *
      * @return
      */
-    String value() default "";
+    String name(); //Default removed - keep explicit for easier lookup
 
-    //TODO: Handle default values when loading
     String defaultValue() default "";
 
     /**

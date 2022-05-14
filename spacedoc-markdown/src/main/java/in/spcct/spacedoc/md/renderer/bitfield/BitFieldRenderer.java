@@ -135,57 +135,57 @@ public class BitFieldRenderer {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Config {
 
-        @ConfigProperty(value = "font-size", defaultValue = "14")
+        @ConfigProperty(name = "font-size", defaultValue = "14")
         private int fontSize;
 
-        @ConfigProperty(value = "bit-width", defaultValue = "20")
+        @ConfigProperty(name = "bit-width", defaultValue = "20")
         private int bitWidth;
 
-        @ConfigProperty(value = "bit-separator-height", defaultValue = "3")
+        @ConfigProperty(name = "bit-separator-height", defaultValue = "3")
         private int tickHeight;
 
-        @ConfigProperty(value = "lane-height", defaultValue = "26")
+        @ConfigProperty(name = "lane-height", defaultValue = "26")
         private int laneHeight;
 
-        @ConfigProperty(value = "separator-height", defaultValue = "7")
+        @ConfigProperty(name = "separator-height", defaultValue = "7")
         private int separatorHeight;
 
-        @ConfigProperty(value = "label-offset-left", defaultValue = "-77")
+        @ConfigProperty(name = "label-offset-left", defaultValue = "-77")
         private int leftLabelHorizontalOffset;
 
-        @ConfigProperty(value = "label-offset-right", defaultValue = "5")
+        @ConfigProperty(name = "label-offset-right", defaultValue = "5")
         private int rightLabelHorizontalOffset;
 
-        @ConfigProperty(value = "label-offset-vertical", defaultValue = "-3")
+        @ConfigProperty(name = "label-offset-vertical", defaultValue = "-3")
         private int labelVerticalOffset;
 
-        @ConfigProperty(value = "label-bitnumber-offset", defaultValue = "-2")
+        @ConfigProperty(name = "label-bitnumber-offset", defaultValue = "-2")
         private int bitNumberOffset;
 
-        @ConfigProperty(value = "image-offset-vertical", defaultValue = "14")
+        @ConfigProperty(name = "image-offset-vertical", defaultValue = "14")
         private int verticalOffset;
 
-        @ConfigProperty(value = "image-width", defaultValue = "-1")
+        @ConfigProperty(name = "image-width", defaultValue = "-1")
         private int imageWidth;
 
-        @ConfigProperty(value = "image-height", defaultValue = "-1")
+        @ConfigProperty(name = "image-height", defaultValue = "-1")
         private int imageHeight;
 
-        @ConfigProperty(value = "image-padding-bottom", defaultValue = "3")
+        @ConfigProperty(name = "image-padding-bottom", defaultValue = "3")
         private int imagePaddingBottom;
 
-        @ConfigProperty(value = "image-font-family", defaultValue = "sans-serif")
+        @ConfigProperty(name = "image-font-family", defaultValue = "sans-serif")
         private String fontFamily;
 
 
-        @ConfigProperty(value = "field-horizontal-offset", defaultValue = "80")
+        @ConfigProperty(name = "field-horizontal-offset", defaultValue = "80")
         private int bitFieldHorizontalOffset;
 
-        @ConfigProperty(value = "field-break-gap", defaultValue = "10")
+        @ConfigProperty(name = "field-break-gap", defaultValue = "10")
         private int fieldBreakGap;
-        @ConfigProperty(value = "field-break-bezier-x", defaultValue = "30")
+        @ConfigProperty(name = "field-break-bezier-x", defaultValue = "30")
         private int fieldBreakBezierX;
-        @ConfigProperty(value = "field-break-bezier-y", defaultValue = "30")
+        @ConfigProperty(name = "field-break-bezier-y", defaultValue = "30")
         private int fieldBreakBezierY;
 
         private String mainElementClass;

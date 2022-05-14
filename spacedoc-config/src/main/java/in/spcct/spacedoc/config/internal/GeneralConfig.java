@@ -27,14 +27,17 @@ public class GeneralConfig implements Config {
      * <p>
      * The remaining portion of the name is typically random, the suffix depends on the content/usage of the temporary file.
      */
-    @ConfigProperty(required = false)
-    private String tempFilePrefix = "spacedoc-temp";
+    @ConfigProperty(name = "temp-file-prefix", defaultValue = "spacedoc-temp")
+    private String tempFilePrefix;
 
     /**
      * Temporary file location.
      * <p>
-     * When null is provided, the default path is used; see {@link java.io.File#createTempFile(String, String, java.io.File)} documentation.
+     * When null is provided, the Java default path for temp files is used;
+     * see {@link java.io.File#createTempFile(String, String, java.io.File)} documentation.
+     * <p>
+     * This default behavior should probably change at some point.
      */
-    @ConfigProperty(required = false)
-    private String tempDirectoryPath = null;
+    @ConfigProperty(name = "temp-directory-path")
+    private String tempDirectoryPath;
 }
