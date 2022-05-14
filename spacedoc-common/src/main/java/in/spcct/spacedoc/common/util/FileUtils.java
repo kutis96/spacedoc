@@ -1,6 +1,7 @@
 package in.spcct.spacedoc.common.util;
 
-import in.spcct.spacedoc.config.GeneralConfig;
+import in.spcct.spacedoc.cdi.Registry;
+import in.spcct.spacedoc.config.internal.GeneralConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.io.IOException;
  */
 public class FileUtils {
 
-    private static final GeneralConfig envConfig = GeneralConfig.getInstance();
+    private static final GeneralConfig envConfig = Registry.lookup(GeneralConfig.class);
 
     /**
      * Creates a new temporary file.

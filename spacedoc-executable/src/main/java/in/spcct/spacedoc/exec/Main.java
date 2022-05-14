@@ -1,7 +1,7 @@
 package in.spcct.spacedoc.exec;
 
-import in.spcct.spacedoc.cdi.SillyCDI;
-import in.spcct.spacedoc.module.Module;
+import in.spcct.spacedoc.cdi.Registry;
+import in.spcct.spacedoc.common.module.Module;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ public class Main {
     }
 
     private static List<Module> getModules() {
-        return SillyCDI.lookupAll(Module.class, 0);
+        return Registry.lookupAll(Module.class, 0);
     }
 
     private static Module lookupModule(String moduleName) {

@@ -1,13 +1,15 @@
 package in.spcct.spacedoc.config.helper;
 
-import in.spcct.spacedoc.config.FFCConfig;
+import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.config.commons.EnableDisableAuto;
+import in.spcct.spacedoc.config.internal.FFCConfig;
 import org.graalvm.home.Version;
-
 public class VariantDecider {
 
     public boolean supportsPolyglotJS() {
-        EnableDisableAuto polyglotJs = FFCConfig.getInstance().getPolyglotJs();
+        FFCConfig ffcConfig = Registry.lookup(FFCConfig.class);
+
+        EnableDisableAuto polyglotJs = ffcConfig.getPolyglotJs();
 
         if (polyglotJs == EnableDisableAuto.ENABLED)
             return true;

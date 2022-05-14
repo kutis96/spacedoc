@@ -1,6 +1,6 @@
 package in.spcct.spacedoc.md.renderer.impl;
 
-import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.exception.RenderingException;
 import in.spcct.spacedoc.ffc.Wavedrom;
 import in.spcct.spacedoc.md.renderer.ExternalCodeRenderer;
@@ -18,7 +18,7 @@ public class WavedromSvgRenderer implements ExternalCodeRenderer {
     public String renderSvg(String json) throws RenderingException {
 
         try {
-            return SillyCDI
+            return Registry
                     .lookup(Wavedrom.class)
                     .renderToSVG(json);
 

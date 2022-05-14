@@ -1,7 +1,7 @@
 package in.spcct.spacedoc.md.renderer.bitfield;
 
-import in.spcct.spacedoc.cdi.SillyCDI;
-import in.spcct.spacedoc.configloader.Property;
+import in.spcct.spacedoc.cdi.Registry;
+import in.spcct.spacedoc.config.ConfigProperty;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.Register;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.FieldTypeRenderer;
@@ -82,7 +82,7 @@ public class BitFieldRenderer {
     }
 
     private FieldTypeRenderer<?> lookupRenderer(FieldType fieldType) {
-        Optional<FieldTypeRenderer> maybeRenderer = SillyCDI.lookupAll(FieldTypeRenderer.class, 0)
+        Optional<FieldTypeRenderer> maybeRenderer = Registry.lookupAll(FieldTypeRenderer.class, 0)
                 .stream()
                 .filter(r -> r.getRenderedClass().isAssignableFrom(fieldType.getClass()))   //instanceof
                 .findAny();
@@ -135,57 +135,57 @@ public class BitFieldRenderer {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Config {
 
-        @Property(value = "font-size", required = false)
+        @ConfigProperty(value = "font-size", required = false)
         private int fontSize = 14;
 
-        @Property(value = "bit-width", required = false)
+        @ConfigProperty(value = "bit-width", required = false)
         private int bitWidth = 20;
 
-        @Property(value = "bit-separator-height", required = false)
+        @ConfigProperty(value = "bit-separator-height", required = false)
         private int tickHeight = 3;
 
-        @Property(value = "lane-height", required = false)
+        @ConfigProperty(value = "lane-height", required = false)
         private int laneHeight = 26;
 
-        @Property(value = "separator-height", required = false)
+        @ConfigProperty(value = "separator-height", required = false)
         private int separatorHeight = 7;
 
-        @Property(value = "label-offset-left", required = false)
+        @ConfigProperty(value = "label-offset-left", required = false)
         private int leftLabelHorizontalOffset = -77;
 
-        @Property(value = "label-offset-right", required = false)
+        @ConfigProperty(value = "label-offset-right", required = false)
         private int rightLabelHorizontalOffset = 5;
 
-        @Property(value = "label-offset-vertical", required = false)
+        @ConfigProperty(value = "label-offset-vertical", required = false)
         private int labelVerticalOffset = -3;
 
-        @Property(value = "label-bitnumber-offset", required = false)
+        @ConfigProperty(value = "label-bitnumber-offset", required = false)
         private int bitNumberOffset = -2;
 
-        @Property(value = "image-offset-vertical", required = false)
+        @ConfigProperty(value = "image-offset-vertical", required = false)
         private int verticalOffset = 14;
 
-        @Property(value = "image-width", required = false)
+        @ConfigProperty(value = "image-width", required = false)
         private int imageWidth = -1;
 
-        @Property(value = "image-height", required = false)
+        @ConfigProperty(value = "image-height", required = false)
         private int imageHeight = -1;
 
-        @Property(value = "image-padding-bottom", required = false)
+        @ConfigProperty(value = "image-padding-bottom", required = false)
         private int imagePaddingBottom = 3;
 
-        @Property(value = "image-font-family", required = false)
+        @ConfigProperty(value = "image-font-family", required = false)
         private String fontFamily = "sans-serif";
 
-        
-        @Property(value = "field-horizontal-offset", required = false)
+
+        @ConfigProperty(value = "field-horizontal-offset", required = false)
         private int bitFieldHorizontalOffset = 80;
 
-        @Property(value = "field-break-gap", required = false)
+        @ConfigProperty(value = "field-break-gap", required = false)
         private int fieldBreakGap = 10;
-        @Property(value = "field-break-bezier-x", required = false)
+        @ConfigProperty(value = "field-break-bezier-x", required = false)
         private int fieldBreakBezierX = 30;
-        @Property(value = "field-break-bezier-y", required = false)
+        @ConfigProperty(value = "field-break-bezier-y", required = false)
         private int fieldBreakBezierY = 30;
 
         private String mainElementClass;

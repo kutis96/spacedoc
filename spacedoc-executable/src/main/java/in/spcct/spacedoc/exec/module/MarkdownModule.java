@@ -1,7 +1,7 @@
 package in.spcct.spacedoc.exec.module;
 
-import in.spcct.spacedoc.cdi.SillyCDI;
-import in.spcct.spacedoc.module.Module;
+import in.spcct.spacedoc.cdi.Registry;
+import in.spcct.spacedoc.common.module.Module;
 import org.apache.commons.cli.*;
 import org.commonmark.Extension;
 import org.commonmark.node.Node;
@@ -90,7 +90,7 @@ public class MarkdownModule implements Module {
     }
 
     private void doTheThing(File inputFile, File outputFile, File prefix, File suffix) {
-        List<Extension> extensions = SillyCDI.lookupAll(Extension.class, 0);
+        List<Extension> extensions = Registry.lookupAll(Extension.class, 0);
 
         org.commonmark.parser.Parser parser = Parser.builder()
                 .extensions(extensions)

@@ -1,6 +1,7 @@
 package in.spcct.spacedoc.md.renderer.bitfield;
 
-import in.spcct.spacedoc.configloader.propconfig.PropertyConfigFieldLoader;
+import in.spcct.spacedoc.config.ConfigProperty;
+import in.spcct.spacedoc.config.loader.propconfig.PropertyConfigFieldLoader;
 
 import java.util.Map;
 import java.util.Properties;
@@ -12,7 +13,7 @@ public class ConfigUtils {
     /**
      * Creates a new {@link in.spcct.spacedoc.md.renderer.bitfield.BitFieldRenderer.Config} from the provided Map of config entries.
      * <p>
-     * The {@link in.spcct.spacedoc.md.renderer.bitfield.BitFieldRenderer.Config} fields are annotated with {@link in.spcct.spacedoc.configloader.Property},
+     * The {@link in.spcct.spacedoc.md.renderer.bitfield.BitFieldRenderer.Config} fields are annotated with {@link ConfigProperty},
      * enabling the use of a a {@link PropertyConfigFieldLoader} for populating the class's values.
      *
      * @param configEntries map of config entries
