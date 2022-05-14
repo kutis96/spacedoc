@@ -9,12 +9,10 @@ import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 /**
  * Module for rendering markdown formatted SpaceDoc documents.
@@ -41,17 +39,41 @@ public class MarkdownModule implements Module {
                 .addOption("head", true, "Prefix this file to the output html. Optional.")
                 .addOption("tail", true, "Suffix this file to the output html. Optional.")
                 .addOption("h", "help", false, "Get help")
-                .addOption("O", "option", true, "Add more config options! Usage: -O key=value")
-                .addOption("OL", "option-use", false, "List option use stats at the end of the run");
+                .addOption("P", "param", true, "Add more config parameters! Usage: -O key=value")
+                .addOption("PL", "param-use", false, "List parameter use stats at the end of the run")
+                .addOption("C", "cfg", true, "Loads parameters from a properties file");
 
         CommandLineParser commandLineParser = new DefaultParser();
         CommandLine commandLine = commandLineParser.parse(cliOptions, args);
 
-        if (commandLine.hasOption("O")) {
-            Arrays.stream(commandLine.getOptionValues("O"))
+        //TODO: Clean this all up someday.
+        if (commandLine.hasOption("C")) {
+            //Load configuration file
+            String configPath = commandLine.getOptionValue("C");
+            Properties properties = new Properties();
+            try {
+                properties.load(new FileInputStream(configPath));
+            } catch (IOException e) {
+                throw new RuntimeException("Failure reading the configuration file at '" + configPath + "'", e);
+            }
+            properties.forEach(
+                    (key, value) -> configContext.put(
+                            ConfigContext.EntrySource.CONFIG_FILE,
+                            (String) key, (String) value
+                    ));
+        }
+
+        if (commandLine.hasOption("P")) {
+            //Load command-line options
+            Arrays.stream(commandLine.getOptionValues("P"))
                     .forEach(string -> {
+                        if (!string.contains("="))
+                            throw new IllegalArgumentException("Missing '=' in " + string + ". Parameters should be specified as -P \"key=value\"");
+
                         String[] splits = string.split("=");
-                        //TODO: bounds check
+                        if (splits.length != 2)
+                            throw new IllegalArgumentException("Weirdness found around '" + string + "'. Parameters should be specified as -P \"key=value\"");
+
                         String key = splits[0].trim();
                         String val = splits[1].trim();
                         configContext.put(
@@ -71,6 +93,7 @@ public class MarkdownModule implements Module {
         File prefixFile = null, suffixFile = null;
 
         if (commandLine.hasOption("i")) {
+            //Input file
             String path = commandLine.getOptionValue("i");
             inputFile = new File(path);
         } else {
@@ -79,6 +102,7 @@ public class MarkdownModule implements Module {
         }
 
         if (commandLine.hasOption("o")) {
+            //Output file
             String path = commandLine.getOptionValue("o");
             outputFile = new File(path);
         } else {
@@ -107,7 +131,7 @@ public class MarkdownModule implements Module {
 
         doTheThing(inputFile, outputFile, prefixFile, suffixFile);
 
-        if (commandLine.hasOption("OL")) {
+        if (commandLine.hasOption("PL")) {
             System.out.println("These entries were actually queried for existence or used:");
             configContext.getQueriedEntries().forEach(
                     e -> System.out.printf("\t%35s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
