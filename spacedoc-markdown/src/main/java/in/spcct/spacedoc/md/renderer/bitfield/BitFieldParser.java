@@ -1,9 +1,9 @@
 package in.spcct.spacedoc.md.renderer.bitfield;
 
-import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.exception.ParserException;
-import in.spcct.spacedoc.configloader.objectmapconfig.ObjectMapConfigSource;
-import in.spcct.spacedoc.configloader.objectmapconfig.ObjectMapFieldLoader;
+import in.spcct.spacedoc.config.loader.impls.objectmapconfig.ObjectMapConfigSource;
+import in.spcct.spacedoc.config.loader.impls.objectmapconfig.ObjectMapFieldLoader;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import in.spcct.spacedoc.md.renderer.bitfield.parser.FieldTypeParser;
 import org.json.JSONArray;
@@ -67,7 +67,7 @@ public class BitFieldParser {
 
     private void parseData(JSONArray dataObjects) throws ParserException {
 
-        List<FieldTypeParser> parsers = SillyCDI
+        List<FieldTypeParser> parsers = Registry
                 .lookupAll(FieldTypeParser.class, 0);
 
         data = new ArrayList<>(dataObjects.length());

@@ -14,7 +14,6 @@
         <module>spacedoc-config</module>
         <module>spacedoc-ffc</module>
         <module>spacedoc-markdown</module>
-        <module>spacedoc-htmldoc</module>
         <module>spacedoc-executable</module>
         <module>spacedoc-cdi</module>
     </modules>

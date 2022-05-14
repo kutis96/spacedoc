@@ -2,9 +2,9 @@ package in.spcct.spacedoc.exec.module;
 
 import in.spcct.spacedoc.common.exception.ParserException;
 import in.spcct.spacedoc.common.exception.RenderingException;
+import in.spcct.spacedoc.common.module.Module;
 import in.spcct.spacedoc.common.util.StringUtils;
 import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererCore;
-import in.spcct.spacedoc.module.Module;
 import org.apache.commons.cli.*;
 
 import java.io.File;

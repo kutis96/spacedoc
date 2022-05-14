@@ -1,7 +1,7 @@
 package in.spcct.spacedoc.md.renderer.bitfield;
 
-import in.spcct.spacedoc.cdi.SillyCDI;
-import in.spcct.spacedoc.configloader.Property;
+import in.spcct.spacedoc.cdi.Registry;
+import in.spcct.spacedoc.config.ConfigProperty;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.FieldType;
 import in.spcct.spacedoc.md.renderer.bitfield.fieldtype.Register;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.FieldTypeRenderer;
@@ -82,7 +82,7 @@ public class BitFieldRenderer {
     }
 
     private FieldTypeRenderer<?> lookupRenderer(FieldType fieldType) {
-        Optional<FieldTypeRenderer> maybeRenderer = SillyCDI.lookupAll(FieldTypeRenderer.class, 0)
+        Optional<FieldTypeRenderer> maybeRenderer = Registry.lookupAll(FieldTypeRenderer.class, 0)
                 .stream()
                 .filter(r -> r.getRenderedClass().isAssignableFrom(fieldType.getClass()))   //instanceof
                 .findAny();
@@ -135,58 +135,58 @@ public class BitFieldRenderer {
     @FieldDefaults(level = AccessLevel.PRIVATE)
     public static class Config {
 
-        @Property(value = "font-size", required = false)
-        private int fontSize = 14;
+        @ConfigProperty(name = "font-size", defaultValue = "14")
+        private int fontSize;
 
-        @Property(value = "bit-width", required = false)
-        private int bitWidth = 20;
+        @ConfigProperty(name = "bit-width", defaultValue = "20")
+        private int bitWidth;
 
-        @Property(value = "bit-separator-height", required = false)
-        private int tickHeight = 3;
+        @ConfigProperty(name = "bit-separator-height", defaultValue = "3")
+        private int tickHeight;
 
-        @Property(value = "lane-height", required = false)
-        private int laneHeight = 26;
+        @ConfigProperty(name = "lane-height", defaultValue = "26")
+        private int laneHeight;
 
-        @Property(value = "separator-height", required = false)
-        private int separatorHeight = 7;
+        @ConfigProperty(name = "separator-height", defaultValue = "7")
+        private int separatorHeight;
 
-        @Property(value = "label-offset-left", required = false)
-        private int leftLabelHorizontalOffset = -77;
+        @ConfigProperty(name = "label-offset-left", defaultValue = "-77")
+        private int leftLabelHorizontalOffset;
 
-        @Property(value = "label-offset-right", required = false)
-        private int rightLabelHorizontalOffset = 5;
+        @ConfigProperty(name = "label-offset-right", defaultValue = "5")
+        private int rightLabelHorizontalOffset;
 
-        @Property(value = "label-offset-vertical", required = false)
-        private int labelVerticalOffset = -3;
+        @ConfigProperty(name = "label-offset-vertical", defaultValue = "-3")
+        private int labelVerticalOffset;
 
-        @Property(value = "label-bitnumber-offset", required = false)
-        private int bitNumberOffset = -2;
+        @ConfigProperty(name = "label-bitnumber-offset", defaultValue = "-2")
+        private int bitNumberOffset;
 
-        @Property(value = "image-offset-vertical", required = false)
-        private int verticalOffset = 14;
+        @ConfigProperty(name = "image-offset-vertical", defaultValue = "14")
+        private int verticalOffset;
 
-        @Property(value = "image-width", required = false)
-        private int imageWidth = -1;
+        @ConfigProperty(name = "image-width", defaultValue = "-1")
+        private int imageWidth;
 
-        @Property(value = "image-height", required = false)
-        private int imageHeight = -1;
+        @ConfigProperty(name = "image-height", defaultValue = "-1")
+        private int imageHeight;
 
-        @Property(value = "image-padding-bottom", required = false)
-        private int imagePaddingBottom = 3;
+        @ConfigProperty(name = "image-padding-bottom", defaultValue = "3")
+        private int imagePaddingBottom;
 
-        @Property(value = "image-font-family", required = false)
-        private String fontFamily = "sans-serif";
+        @ConfigProperty(name = "image-font-family", defaultValue = "sans-serif")
+        private String fontFamily;
 
-        
-        @Property(value = "field-horizontal-offset", required = false)
-        private int bitFieldHorizontalOffset = 80;
 
-        @Property(value = "field-break-gap", required = false)
-        private int fieldBreakGap = 10;
-        @Property(value = "field-break-bezier-x", required = false)
-        private int fieldBreakBezierX = 30;
-        @Property(value = "field-break-bezier-y", required = false)
-        private int fieldBreakBezierY = 30;
+        @ConfigProperty(name = "field-horizontal-offset", defaultValue = "80")
+        private int bitFieldHorizontalOffset;
+
+        @ConfigProperty(name = "field-break-gap", defaultValue = "10")
+        private int fieldBreakGap;
+        @ConfigProperty(name = "field-break-bezier-x", defaultValue = "30")
+        private int fieldBreakBezierX;
+        @ConfigProperty(name = "field-break-bezier-y", defaultValue = "30")
+        private int fieldBreakBezierY;
 
         private String mainElementClass;
 

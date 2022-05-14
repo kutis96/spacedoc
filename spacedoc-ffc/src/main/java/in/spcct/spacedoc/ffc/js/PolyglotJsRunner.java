@@ -1,6 +1,7 @@
 package in.spcct.spacedoc.ffc.js;
 
-import in.spcct.spacedoc.config.PolyglotConfig;
+import in.spcct.spacedoc.cdi.Registry;
+import in.spcct.spacedoc.config.internal.PolyglotConfig;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
@@ -19,7 +20,9 @@ public abstract class PolyglotJsRunner {
 
     public PolyglotJsRunner() {
 
-        File requireDir = new File(PolyglotConfig.getInstance().getRequireCwd());
+        PolyglotConfig polyglotConfig = Registry.lookup(PolyglotConfig.class);
+
+        File requireDir = new File(polyglotConfig.getRequireCwd());
 
         try {
             Files.createDirectories(requireDir.toPath());

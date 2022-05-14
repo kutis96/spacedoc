@@ -1,6 +1,7 @@
 package in.spcct.spacedoc.ffc.cli;
 
-import in.spcct.spacedoc.config.FFCConfig;
+import in.spcct.spacedoc.cdi.Registry;
+import in.spcct.spacedoc.config.internal.FFCConfig;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,10 +21,13 @@ public class NpxRunner {
 
     private final String npxPath;
 
+    //TODO: Replace with Registry lookups
     public static NpxRunner getInstance() {
-        if(instance == null) {
+        FFCConfig ffcConfig = Registry.lookup(FFCConfig.class);
+
+        if (instance == null) {
             instance = new NpxRunner(
-                    FFCConfig.getInstance().getNpxExecutable()
+                    ffcConfig.getNpxExecutable()
             );
         }
         return instance;

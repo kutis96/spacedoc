@@ -1,6 +1,6 @@
 package in.spcct.spacedoc.md;
 
-import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererExtension;
 import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererStore;
 import in.spcct.spacedoc.md.renderer.ExternalCodeRenderer;
@@ -30,32 +30,32 @@ public class Setup {
 
     private static void registerCommonMarkExtensions() {
         Class<Extension> extensionClass = Extension.class;
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 extensionClass, 1, TablesExtension::create
         );
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 extensionClass, 1, StrikethroughExtension::create
         );
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 extensionClass, 1, ExternalCodeRendererExtension::create
         );
     }
 
     public static void registerExternalCodeRenderers() {
         Class<ExternalCodeRenderer> externalCodeRendererClass = ExternalCodeRenderer.class;
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 externalCodeRendererClass, 1, WavedromSvgRenderer::new
         );
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 externalCodeRendererClass, 1, GraphvizSvgRenderer::new
         );
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 externalCodeRendererClass, 1, BitFieldExternalCodeRenderer::new
         );
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 externalCodeRendererClass, 1, InstructionSetCodeRenderer::new
         );
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 externalCodeRendererClass, 1, MemoryMapCodeRenderer::new
         );
 
@@ -63,27 +63,27 @@ public class Setup {
         // With nicer CDI, one could actually look stuff up nicer instead of using a special store for everything.
         ExternalCodeRendererStore store = ExternalCodeRendererStore.getInstance();
 
-        for(ExternalCodeRenderer codeRenderer : SillyCDI.lookupAll(externalCodeRendererClass, 0)) {
+        for (ExternalCodeRenderer codeRenderer : Registry.lookupAll(externalCodeRendererClass, 0)) {
             store.register(codeRenderer.languageName(), codeRenderer);
         }
     }
 
     public static void registerBitFieldParsers() {
         Class<FieldTypeParser> fieldTypeParserClass = FieldTypeParser.class;
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 fieldTypeParserClass, 1, SeparatorParser::new
         );
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 fieldTypeParserClass, 1, RegisterParser::new
         );
     }
 
     public static void registerBitFieldRenderers() {
         Class<FieldTypeRenderer> fieldTypeRendererClass = FieldTypeRenderer.class;
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 fieldTypeRendererClass, 1, SeparatorRenderer::new
         );
-        SillyCDI.registerCaching(
+        Registry.registerSingleton(
                 fieldTypeRendererClass, 1, RegisterRenderer::new
         );
     }

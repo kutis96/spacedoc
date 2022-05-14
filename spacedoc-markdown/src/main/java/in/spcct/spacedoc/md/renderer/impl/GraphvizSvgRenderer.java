@@ -1,6 +1,6 @@
 package in.spcct.spacedoc.md.renderer.impl;
 
-import in.spcct.spacedoc.cdi.SillyCDI;
+import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.exception.RenderingException;
 import in.spcct.spacedoc.ffc.Graphviz;
 import in.spcct.spacedoc.md.renderer.ExternalCodeRenderer;
@@ -18,7 +18,7 @@ public class GraphvizSvgRenderer implements ExternalCodeRenderer {
     @Override
     public String renderSvg(String source) throws RenderingException {
         try {
-            return SillyCDI
+            return Registry
                     .lookup(Graphviz.class)
                     .renderToSVG(source);
 
