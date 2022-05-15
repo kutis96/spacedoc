@@ -3,6 +3,7 @@ package in.spcct.spacedoc.ffc.cli;
 import in.spcct.spacedoc.common.util.FileUtils;
 import in.spcct.spacedoc.common.util.StringUtils;
 import in.spcct.spacedoc.ffc.Wavedrom;
+import lombok.extern.java.Log;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,14 +16,14 @@ import java.util.concurrent.TimeUnit;
  * <p>
  * See https://github.com/wavedrom/cli/
  */
+@Log
 public class WavedromCLI implements Wavedrom {
 
     private File processSVG(String input) throws IOException, InterruptedException {
 
         File inputFile = FileUtils.createTempFile(".json5");
 
-        String x = inputFile.getAbsolutePath();
-        System.out.println(x);
+        log.fine("Wavedrom input file path: " + inputFile.getAbsolutePath());
 
         try (FileWriter fileWriter = new FileWriter(inputFile)) {
             fileWriter.write(input);

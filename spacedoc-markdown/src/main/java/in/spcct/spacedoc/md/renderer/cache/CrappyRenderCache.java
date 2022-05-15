@@ -3,6 +3,7 @@ package in.spcct.spacedoc.md.renderer.cache;
 import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.config.internal.RenderCacheConfig;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -10,39 +11,47 @@ import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.logging.Level;
+
+import static in.spcct.spacedoc.common.util.StringUtils.toStackTraceString;
 
 // Mappings:
 // source hash <-> cache file
+@Log
 public class CrappyRenderCache implements RenderCache {
 
     private final Set<Integer> cachedSourceHashes = new HashSet<>();
 
     private final RenderCacheConfig config = Registry.lookup(RenderCacheConfig.class);
 
+    public static final Level cacheDebugLoggingLevel = Level.FINE;
+
     @SneakyThrows
     public CrappyRenderCache() {
         //
         Path cacheDir = Path.of(config.getCacheDirectory());
         Files.createDirectories(cacheDir);
-        System.out.println("Cache path: " + cacheDir.toAbsolutePath());
+        log.log(cacheDebugLoggingLevel, "Cache path: " + cacheDir.toAbsolutePath());
     }
 
     @Override
     public String lookupOrGenerate(String sourceCode, Function<String, String> lazyRenderer) {
         Integer sourceHash = sourceCode.hashCode();
+
         String cfn = toCacheFileName(sourceHash);
+
         try {
             if (isCached(sourceHash)) {
-                System.out.println("Cache hit for " + cfn);
+                log.log(cacheDebugLoggingLevel, "Cache hit for " + cfn);
                 cachedSourceHashes.add(sourceHash);
             } else {
-                System.out.println("Cache miss for " + cfn);
+                log.log(cacheDebugLoggingLevel, "Cache miss for " + cfn);
                 store(sourceHash, lazyRenderer.apply(sourceCode));
             }
             return load(sourceHash);
         } catch (IOException e) {
-            System.out.println("Cache fault for " + cfn);
-            e.printStackTrace();
+            log.log(cacheDebugLoggingLevel, "Cache fault for " + cfn);
+            log.warning("Exception using render cache\n" + toStackTraceString(e));
             return lazyRenderer.apply(sourceCode);
         }
     }

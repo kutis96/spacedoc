@@ -2,11 +2,13 @@ package in.spcct.spacedoc.exec;
 
 import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.module.Module;
+import lombok.extern.java.Log;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Log
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -27,7 +29,10 @@ public class Main {
 
         Module module = lookupModule(moduleName);
 
+        long start = System.currentTimeMillis();
         module.run(stripInitialArgument(args));
+        long end = System.currentTimeMillis();
+        log.info("Run time: " + (end - start) / 1000. + " s");
 
     }
 

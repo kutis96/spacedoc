@@ -4,6 +4,7 @@ import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.util.StringUtils;
 import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererCore;
 import in.spcct.spacedoc.md.renderer.cache.RenderCache;
+import lombok.extern.java.Log;
 import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.Node;
 import org.commonmark.renderer.html.CoreHtmlNodeRenderer;
@@ -22,6 +23,7 @@ import java.util.Map;
  * <p>
  * If no renderer for the specified language is found, a fallback to the default renderer occurs.
  */
+@Log
 public class ExternalFormatNodeHtmlRenderer extends FencedCodeBlockRenderer {
 
     private final HtmlNodeRendererContext context;

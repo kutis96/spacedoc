@@ -2,7 +2,9 @@ package in.spcct.spacedoc.exec.module;
 
 import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.module.Module;
+import in.spcct.spacedoc.common.util.StringUtils;
 import in.spcct.spacedoc.config.ConfigContext;
+import lombok.extern.java.Log;
 import org.apache.commons.cli.*;
 import org.commonmark.Extension;
 import org.commonmark.node.Node;
@@ -17,6 +19,7 @@ import java.util.Properties;
 /**
  * Module for rendering markdown formatted SpaceDoc documents.
  */
+@Log
 public class MarkdownModule implements Module {
 
     private static final ConfigContext configContext = ConfigContext.getInstance();
@@ -134,15 +137,15 @@ public class MarkdownModule implements Module {
         if (commandLine.hasOption("PL")) {
             System.out.println("These entries were actually queried for existence or used:");
             configContext.getQueriedEntries().forEach(
-                    e -> System.out.printf("\t%35s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
+                    e -> System.out.printf("\t%40s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
             );
             System.out.println("These values entries were actually used:");
             configContext.getUsedEntries().forEach(
-                    e -> System.out.printf("\t%35s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
+                    e -> System.out.printf("\t%40s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
             );
             System.out.println("These entries were defined, but never used:");
             configContext.getUnusedEntries().forEach(
-                    e -> System.out.printf("\t%35s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
+                    e -> System.out.printf("\t%40s (%12s): %s%n", e.getKey(), e.getSource() == null ? "undefined" : e.getSource(), e.getValue() == null ? "" : e.getValue())
             );
         }
 
@@ -194,7 +197,8 @@ public class MarkdownModule implements Module {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warning("Failed to copy content from a file: " + content.getAbsolutePath() + "\n"
+                    + StringUtils.toStackTraceString(e));
         }
 
     }

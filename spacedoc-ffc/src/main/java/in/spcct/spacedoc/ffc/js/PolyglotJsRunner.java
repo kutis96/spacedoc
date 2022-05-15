@@ -2,6 +2,7 @@ package in.spcct.spacedoc.ffc.js;
 
 import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.config.internal.PolyglotConfig;
+import lombok.extern.java.Log;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.Value;
 
@@ -11,9 +12,12 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
+import static in.spcct.spacedoc.common.util.StringUtils.toStackTraceString;
+
 /**
  * A simple wrapper for running JavaScript code via the GraalVM polyglot feature.
  */
+@Log
 public abstract class PolyglotJsRunner {
 
     protected final Context context;
@@ -27,7 +31,7 @@ public abstract class PolyglotJsRunner {
         try {
             Files.createDirectories(requireDir.toPath());
         } catch (IOException e) {
-            e.printStackTrace();
+            log.warning("Exception creating require directories for JS runners\n" + toStackTraceString(e));
         }
 
         Map<String, String> options = new HashMap<>();
