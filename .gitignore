@@ -1,7 +1,8 @@
 */target/
 
 # local testing
-js/*
+.spacedoc/*
+.idea/
 
 *.html
 *.css
