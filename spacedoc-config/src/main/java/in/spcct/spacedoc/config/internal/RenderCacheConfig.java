@@ -12,14 +12,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @EqualsAndHashCode(callSuper = false)
 @ConfigNamespace(
-        prefix = "polyglot"
+        prefix = "markdown.render-cache"
 )
-public class PolyglotConfig implements Config {
+public class RenderCacheConfig implements Config {
 
-    /**
-     * Directory to be used for require():d NPM modules
-     */
-    @ConfigProperty(name = "js.require.directory", defaultValue = ".spacedoc/js/require")
-    private String requireCwd;
+    @ConfigProperty(name = "cache-directory", defaultValue = ".spacedoc/cache/")
+    private String cacheDirectory;
 
 }

@@ -31,7 +31,7 @@ public class FFCConfig implements Config {
     /**
      *
      */
-    @ConfigProperty(name = "polyglot-j")
+    @ConfigProperty(name = "polyglot-js")
     @Converter(EnumConverter.class)
     private EnableDisableAuto polyglotJs = EnableDisableAuto.AUTO;
 }
