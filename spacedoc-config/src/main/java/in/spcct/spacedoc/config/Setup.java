@@ -4,6 +4,7 @@ import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.config.internal.FFCConfig;
 import in.spcct.spacedoc.config.internal.GeneralConfig;
 import in.spcct.spacedoc.config.internal.PolyglotConfig;
+import in.spcct.spacedoc.config.internal.RenderCacheConfig;
 import in.spcct.spacedoc.config.loader.Config;
 import in.spcct.spacedoc.config.loader.impls.confwrap.ConfigContextConfigSource;
 import in.spcct.spacedoc.config.loader.impls.confwrap.ConfigWrapperFieldLoader;
@@ -26,6 +27,7 @@ public class Setup {
         loadAndRegister(new FFCConfig());
         loadAndRegister(new GeneralConfig());
         loadAndRegister(new PolyglotConfig());
+        loadAndRegister(new RenderCacheConfig());
     }
 
     private static void loadAndRegister(Config config) {

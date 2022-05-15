@@ -11,6 +11,8 @@ import in.spcct.spacedoc.md.renderer.bitfield.parser.SeparatorParser;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.FieldTypeRenderer;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.RegisterRenderer;
 import in.spcct.spacedoc.md.renderer.bitfield.renderer.SeparatorRenderer;
+import in.spcct.spacedoc.md.renderer.cache.CrappyRenderCache;
+import in.spcct.spacedoc.md.renderer.cache.RenderCache;
 import in.spcct.spacedoc.md.renderer.externalcode.instructionset.InstructionSetCodeRenderer;
 import in.spcct.spacedoc.md.renderer.externalcode.memorymap.MemoryMapCodeRenderer;
 import in.spcct.spacedoc.md.renderer.impl.GraphvizSvgRenderer;
@@ -22,10 +24,17 @@ import org.commonmark.ext.gfm.tables.TablesExtension;
 public class Setup {
 
     public static void registerAll() {
+        registerCache();
         registerCommonMarkExtensions();
         registerExternalCodeRenderers();
         registerBitFieldParsers();
         registerBitFieldRenderers();
+    }
+
+    private static void registerCache() {
+        Class<RenderCache> cacheClass = RenderCache.class;
+        //Registry.registerSingleton(cacheClass, 0, RenderCache.NullRenderCache::new);
+        Registry.registerSingleton(cacheClass, 1, CrappyRenderCache::new);
     }
 
     private static void registerCommonMarkExtensions() {

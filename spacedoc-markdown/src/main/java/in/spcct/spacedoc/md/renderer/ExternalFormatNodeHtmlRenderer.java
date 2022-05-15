@@ -1,7 +1,9 @@
 package in.spcct.spacedoc.md.renderer;
 
+import in.spcct.spacedoc.cdi.Registry;
 import in.spcct.spacedoc.common.util.StringUtils;
 import in.spcct.spacedoc.md.extension.externalformat.ExternalCodeRendererCore;
+import in.spcct.spacedoc.md.renderer.cache.RenderCache;
 import org.commonmark.node.FencedCodeBlock;
 import org.commonmark.node.Node;
 import org.commonmark.renderer.html.CoreHtmlNodeRenderer;
@@ -70,12 +72,17 @@ public class ExternalFormatNodeHtmlRenderer extends FencedCodeBlockRenderer {
         }
 
         String svg;
-        try {
-            svg = core.render(languageName, ((FencedCodeBlock) node).getLiteral());
-        } catch (Exception e) {
-            e.printStackTrace();
-            svg = generateErrorSVG(e);
-        }
+        RenderCache renderCache = Registry.lookup(RenderCache.class);
+        String code = ((FencedCodeBlock) node).getLiteral();
+        svg = renderCache.lookupOrGenerate(
+                code, c -> {
+                    try {
+                        return core.render(languageName, c);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return generateErrorSVG(e);
+                    }
+                });
 
         Map<String, String> attributes = context.extendAttributes(node, "div", Collections.emptyMap());
         renderSVG(svg, languageName, attributes);
